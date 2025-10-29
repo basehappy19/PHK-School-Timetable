@@ -41,8 +41,20 @@
             sizes="16x16"
             href="/favicon_io/favicon-16x16.png"
         />
+        <meta name="theme-color" content="#0ea5e9" />
         <link rel="manifest" href="/favicon_io/site.webmanifest" />
+        <link rel="manifest" href="/site.webmanifest" />
     </head>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker
+                    .register("/sw.js")
+                    .catch((err) => console.error("SW register failed:", err));
+            });
+        }
+    </script>
+
     <body
         class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen"
     >
@@ -201,7 +213,24 @@
             <section>
                 <!-- Weekday Tabs -->
                 <div class="mb-6">
-                    <div id="weekdayTabs" class="flex flex-wrap gap-2"></div>
+                    <div class="flex justify-between">
+                        <button
+                            id="prevDayBtn"
+                            class="px-3 py-2 rounded-xl border"
+                        >
+                            ก่อนหน้า
+                        </button>
+                        <div
+                            id="weekdayTabs"
+                            class="flex flex-wrap gap-2"
+                        ></div>
+                        <button
+                            id="nextDayBtn"
+                            class="px-3 py-2 rounded-xl border"
+                        >
+                            ถัดไป
+                        </button>
+                    </div>
                 </div>
                 <h2
                     id="todayTitle"
@@ -209,6 +238,27 @@
                 >
                     ตารางวันนี้
                 </h2>
+                <!-- Search Bar -->
+                <div class="mb-4 flex items-center gap-3">
+                    <div class="relative flex-1">
+                        <input id="searchInput" type="text" inputmode="search"
+                        placeholder="ค้นหาวิชา หรือชื่อครู" class="w-full rounded-xl
+                        border border-gray-300 dark:border-gray-700 bg-white
+                        dark:bg-gray-900 px-4 py-2.5 outline-none focus:ring-2
+                        focus:ring-blue-500" />
+                        <kbd
+                            class="hidden md:block absolute right-3 top-2.5 text-xs px-1.5 py-0.5 rounded border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400"
+                            >/</kbd
+                        >
+                    </div>
+                    <button
+                        id="clearSearchBtn"
+                        class="px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                        ล้าง
+                    </button>
+                </div>
+                <div id="searchResults" class="space-y-2 mb-6 hidden"></div>
                 <div id="todayTable" class="space-y-2"></div>
             </section>
         </div>
@@ -247,6 +297,70 @@
                 return d;
             };
             const fmtHM = (d) => pad(d.getHours()) + ":" + pad(d.getMinutes());
+            // ---------- Search helpers ----------
+            let searchTerm = ""; // สถานะคำค้น
+
+            const escapeHTML = (s) =>
+                s == null
+                    ? ""
+                    : String(s)
+                          .replace(/&/g, "&amp;")
+                          .replace(/</g, "&lt;")
+                          .replace(/>/g, "&gt;")
+                          .replace(/"/g, "&quot;")
+                          .replace(/'/g, "&#39;");
+
+            // สร้าง RegExp จากคำค้น (หนีอักขระพิเศษ)
+            const makeQueryRegex = (q) => {
+                if (!q) return null;
+                const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                try {
+                    return new RegExp(escaped, "gi"); // case-insensitive สำหรับภาษาอังกฤษ; ภาษาไทยไม่กระทบ
+                } catch {
+                    return null;
+                }
+            };
+
+            // ไฮไลต์คำที่ตรงใน text (คืนค่าเป็น HTML ที่ escape แล้ว+mark)
+            const highlightHTML = (text, q) => {
+                if (!q) return escapeHTML(text || "");
+                const rx = makeQueryRegex(q);
+                if (!rx) return escapeHTML(text || "");
+                const raw = String(text || "");
+                // ตัดเป็นส่วน ๆ แล้วประกบด้วย <mark>
+                let out = "";
+                let last = 0;
+                for (const m of raw.matchAll(rx)) {
+                    const i = m.index ?? 0;
+                    out += escapeHTML(raw.slice(last, i));
+                    out += `<mark class="px-1 rounded bg-yellow-200 text-gray-900 dark:bg-yellow-500/70 dark:text-gray-900">${escapeHTML(
+                        m[0]
+                    )}</mark>`;
+                    last = i + m[0].length;
+                }
+                out += escapeHTML(raw.slice(last));
+                return out;
+            };
+
+            // ช่วยดูว่าการ์ดนี้ "ตรงคำค้น" ไหม (เช็คทั้งวิชาและครู)
+            const isMatch = (p, q) => {
+                if (!q) return true;
+                const t = q.toLowerCase();
+                return (
+                    (p.subject || "").toLowerCase().includes(t) ||
+                    (p.teacher || "").toLowerCase().includes(t)
+                );
+            };
+
+            // debounce เล็กน้อยเวลา keyup
+            const debounce = (fn, ms = 120) => {
+                let h;
+                return (...args) => {
+                    clearTimeout(h);
+                    h = setTimeout(() => fn(...args), ms);
+                };
+            };
+
             const humanizeMs = (ms) => {
                 if (ms <= 0) return "ถึงเวลาแล้ว";
                 const totalSec = Math.floor(ms / 1000);
@@ -257,6 +371,81 @@
                 if (m > 0) return `${m} นาที ${s} วินาที`;
                 return `${s} วินาที`;
             };
+            function renderSearchResults(q) {
+                const box = document.getElementById("searchResults");
+                // ถ้าไม่มีคำค้น: ซ่อนพาเนลแล้วออก
+                if (!q || !q.trim()) {
+                    box.classList.add("hidden");
+                    box.innerHTML = "";
+                    return;
+                }
+
+                const results = [];
+                // ค้นหาเฉพาะวันจันทร์–ศุกร์ (1..5) ตามโค้ดเดิมของแท็บ
+                for (let wd = 1; wd <= 5; wd++) {
+                    const dayPeriods = getScheduleByWd(wd) || [];
+                    // ไม่จำเป็นต้อง enrich เวลา เพราะเราจะแสดงตามสตริง start/end ก็พอ
+                    for (const p of dayPeriods) {
+                        if (isMatch(p, q)) {
+                            results.push({ wd, p });
+                        }
+                    }
+                }
+
+                // เรนเดอร์
+                if (!results.length) {
+                    box.classList.remove("hidden");
+                    box.innerHTML = `
+      <div class="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+        ไม่พบผลลัพธ์ที่ตรงในสัปดาห์นี้
+      </div>`;
+                    return;
+                }
+
+                // สรุปหัวข้อ
+                const header = `
+    <div class="p-3 rounded-xl bg-gray-100/60 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-800 text-sm text-gray-600 dark:text-gray-300">
+      ผลการค้นหา (ทุกวัน): <span class="font-medium">${results.length}</span> รายการ
+    </div>
+  `;
+
+                const itemsHTML = results
+                    .map(({ wd, p }) => {
+                        const dayBadge = `
+      <span class="text-xs px-2 py-1 rounded-full border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+        วัน${WEEKDAY_THAI[wd]}
+      </span>
+    `;
+
+                        const subjectHTML = highlightHTML(p.subject, q);
+                        const teacherText = p.teacher ? `ครู${p.teacher}` : "";
+                        const teacherHTML = highlightHTML(teacherText, q);
+                        const roomHTML = p.room
+                            ? ` • ห้อง ${escapeHTML(p.room)}`
+                            : "";
+
+                        return `
+      <div class="p-4 rounded-xl border bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 flex items-center justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            ${dayBadge}
+            <div class="font-medium text-gray-900 dark:text-white">${subjectHTML}</div>
+          </div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            ${teacherHTML}${roomHTML}
+          </div>
+        </div>
+        <div class="mono text-sm text-gray-600 dark:text-gray-400 ml-4">
+          ${escapeHTML(p.start)} - ${escapeHTML(p.end)}
+        </div>
+      </div>
+    `;
+                    })
+                    .join("");
+
+                box.classList.remove("hidden");
+                box.innerHTML = header + itemsHTML;
+            }
 
             const getScheduleByWd = (wd) => SCHEDULE[wd] ?? [];
 
@@ -322,36 +511,88 @@
                     wrap.innerHTML = `<div class="p-6 text-center text-gray-400 dark:text-gray-600 bg-white dark:bg-gray-900 rounded-2xl border border-dashed border-gray-300 dark:border-gray-800">วันนี้ไม่มีตารางเรียน</div>`;
                     return;
                 }
+
                 periods.forEach((p) => {
                     const active = now >= p.startDate && now < p.endDate;
                     const isBreak = p.code === "BREAK";
+                    const matched = isMatch(p, searchTerm);
+
                     const bgClass = active
                         ? "bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800"
                         : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800";
-                    const textClass = isBreak
-                        ? "text-gray-500 dark:text-gray-500"
-                        : "text-gray-900 dark:text-white";
+
+                    // ถ้าไม่ตรงคำค้น ให้จางลงเล็กน้อย (ยังแสดงอยู่)
+                    const fadeClass =
+                        !matched && searchTerm ? "opacity-50" : "";
+
+                    const subjectHTML = isBreak
+                        ? escapeHTML(p.subject)
+                        : highlightHTML(p.subject, searchTerm);
+
+                    const teacherText = p.teacher ? `ครู${p.teacher}` : "";
+                    const teacherHTML = highlightHTML(teacherText, searchTerm);
+
+                    const roomText =
+                        p.room && !isBreak ? ` • ห้อง ${p.room}` : "";
+                    // ห้องไม่ต้องไฮไลต์ (ตามโจทย์ค้นหาวิชา/ครู)
+                    const roomHTML = escapeHTML(roomText);
 
                     wrap.insertAdjacentHTML(
                         "beforeend",
                         `
-                        <div class="p-4 rounded-xl border ${bgClass} flex items-center justify-between">
-                            <div class="flex-1">
-                                <div class="font-medium ${textClass}">${
-                            p.subject
-                        }</div>
-                                <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                    ${p.teacher ? `ครู${p.teacher}` : ""}${
-                            p.room && !isBreak ? ` • ห้อง ${p.room}` : ""
-                        }
-                                </div>
-                            </div>
-                            <div class="mono text-sm text-gray-600 dark:text-gray-400 ml-4">
-                                ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
-                            </div>
-                        </div>
-                        `
+      <div class="p-4 rounded-xl border ${bgClass} ${fadeClass} flex items-center justify-between">
+        <div class="flex-1">
+          <div class="font-medium ${
+              isBreak
+                  ? "text-gray-500 dark:text-gray-500"
+                  : "text-gray-900 dark:text-white"
+          }">
+            ${subjectHTML}
+          </div>
+          <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            ${teacherHTML}${roomHTML}
+          </div>
+        </div>
+        <div class="mono text-sm text-gray-600 dark:text-gray-400 ml-4">
+          ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
+        </div>
+      </div>
+      `
                     );
+                });
+            }
+
+            el("prevDayBtn").onclick = () => {
+                if (selectedWd > 1) {
+                    selectedWd--;
+                    render(new Date());
+                }
+            };
+
+            el("nextDayBtn").onclick = () => {
+                if (selectedWd < 5) {
+                    selectedWd++;
+                    render(new Date());
+                }
+            };
+
+            function updateDayButtons() {
+                const prevBtn = el("prevDayBtn");
+                const nextBtn = el("nextDayBtn");
+
+                prevBtn.disabled = selectedWd <= 1;
+                nextBtn.disabled = selectedWd >= 5;
+
+                // เพิ่มคลาสแสดงสถานะ disabled ดูสวยขึ้น
+                [prevBtn, nextBtn].forEach((btn) => {
+                    if (btn.disabled) {
+                        btn.classList.add("opacity-50", "cursor-not-allowed");
+                    } else {
+                        btn.classList.remove(
+                            "opacity-50",
+                            "cursor-not-allowed"
+                        );
+                    }
                 });
             }
 
@@ -375,6 +616,7 @@
 
                     tabs.appendChild(btn);
                 }
+                updateDayButtons();
             }
 
             function toggleLiveBlocks(show) {
@@ -399,6 +641,7 @@
 
                 // สร้างแท็บวัน (อัปเดตสถานะ active)
                 renderWeekdayTabs();
+                renderSearchResults(searchTerm);
 
                 // ชื่อหัวเรื่องของตาราง
                 const isTodaySelected = selectedWd === now.getDay();
@@ -417,7 +660,7 @@
                     isTodaySelected
                         ? now
                         : new Date(baseDate.setHours(0, 0, 0, 0))
-                ); // ถ้าไม่ใช่วันนี้ จะไม่ทำ active-highlight
+                );
 
                 // แสดง/ซ่อนบล็อกคาบปัจจุบัน-ก่อนหน้า-ถัดไป
                 toggleLiveBlocks(isTodaySelected);
@@ -502,6 +745,50 @@
                 render(new Date());
                 setInterval(() => render(new Date()), 1000);
             }
+            // ---------- Wire search input ----------
+            const searchInput = () => document.getElementById("searchInput");
+            const clearSearchBtn = () =>
+                document.getElementById("clearSearchBtn");
+
+            const applySearch = debounce(() => {
+                searchTerm = (searchInput()?.value || "").trim();
+                render(new Date()); // เรนเดอร์ใหม่เพื่อไฮไลต์/จาง
+            }, 120);
+
+            window.addEventListener("DOMContentLoaded", () => {
+                const inp = searchInput();
+                const clr = clearSearchBtn();
+                if (inp) {
+                    inp.addEventListener("input", applySearch);
+                }
+                if (clr) {
+                    clr.addEventListener("click", () => {
+                        if (!inp) return;
+                        inp.value = "";
+                        searchTerm = "";
+                        render(new Date());
+                        inp.focus();
+                    });
+                }
+                // ช็อตคัตกด "/" เพื่อโฟกัสช่องค้นหา
+                window.addEventListener("keydown", (e) => {
+                    if (
+                        e.key === "/" &&
+                        !e.metaKey &&
+                        !e.ctrlKey &&
+                        !e.altKey
+                    ) {
+                        const tag = (
+                            document.activeElement?.tagName || ""
+                        ).toLowerCase();
+                        if (tag !== "input" && tag !== "textarea") {
+                            e.preventDefault();
+                            inp?.focus();
+                            inp?.select();
+                        }
+                    }
+                });
+            });
 
             loadSchedule();
         </script>
