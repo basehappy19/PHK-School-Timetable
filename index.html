@@ -7,17 +7,21 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <style>
             @import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap");
-
             * {
                 font-family: "Prompt", system-ui, -apple-system, sans-serif;
             }
-
             .mono {
                 font-variant-numeric: tabular-nums;
             }
-
             * {
                 transition: background-color 0.2s ease, border-color 0.2s ease;
+            }
+            .tab-btn[aria-current="true"] {
+                background-color: rgb(59 130 246 / 0.1);
+                border-color: rgb(147 197 253);
+            }
+            .tab-btn[aria-current="true"] .tab-label {
+                color: rgb(37 99 235);
             }
         </style>
         <link
@@ -44,7 +48,7 @@
     >
         <div class="max-w-5xl mx-auto p-4 md:p-8">
             <!-- Header -->
-            <header class="mb-8">
+            <header class="mb-6">
                 <h1
                     class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-2"
                 >
@@ -57,7 +61,7 @@
 
             <!-- Current Time Card -->
             <div
-                class="mb-6 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800"
+                class="mb-4 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800"
             >
                 <div class="flex items-center justify-between flex-wrap gap-4">
                     <div>
@@ -90,7 +94,7 @@
             </div>
 
             <!-- Current Period - Large Card -->
-            <div class="mb-6">
+            <div class="mb-6" id="currentBlock">
                 <div
                     id="currentCard"
                     class="p-8 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-lg text-white"
@@ -122,7 +126,7 @@
             </div>
 
             <!-- Previous & Next Period -->
-            <div class="grid md:grid-cols-2 gap-4 mb-8">
+            <div class="grid md:grid-cols-2 gap-4 mb-8" id="adjacentBlock">
                 <!-- Previous -->
                 <div
                     class="p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800"
@@ -194,9 +198,13 @@
                 </div>
             </div>
 
-            <!-- Today's Schedule -->
             <section>
+                <!-- Weekday Tabs -->
+                <div class="mb-6">
+                    <div id="weekdayTabs" class="flex flex-wrap gap-2"></div>
+                </div>
                 <h2
+                    id="todayTitle"
                     class="text-xl font-semibold text-gray-900 dark:text-white mb-4"
                 >
                     ตารางวันนี้
@@ -207,6 +215,16 @@
 
         <script>
             let SCHEDULE = {};
+            let selectedWd = new Date().getDay(); // 0=อา ... 6=ส
+            const WEEKDAY_THAI = [
+                "อาทิตย์",
+                "จันทร์",
+                "อังคาร",
+                "พุธ",
+                "พฤหัสบดี",
+                "ศุกร์",
+                "เสาร์",
+            ];
 
             async function loadSchedule() {
                 try {
@@ -240,27 +258,22 @@
                 return `${s} วินาที`;
             };
 
-            const getTodaySchedule = (now = new Date()) => {
-                const wd = now.getDay();
-                return SCHEDULE[wd] ?? [];
-            };
+            const getScheduleByWd = (wd) => SCHEDULE[wd] ?? [];
 
-            const enrichPeriods = (periods, baseDate = new Date()) => {
-                return periods
+            const enrichPeriods = (periods, baseDate = new Date()) =>
+                periods
                     .map((p) => ({
                         ...p,
                         startDate: parseHM(p.start, baseDate),
                         endDate: parseHM(p.end, baseDate),
                     }))
                     .sort((a, b) => a.startDate - b.startDate);
-            };
 
             const findNowPrevNext = (periods, now = new Date()) => {
                 const N = periods.length;
                 let current = null,
                     prev = null,
                     next = null;
-
                 for (let i = 0; i < N; i++) {
                     const p = periods[i];
                     if (now >= p.startDate && now < p.endDate) {
@@ -272,14 +285,12 @@
                             periods[nextIndex].code &&
                             current.code &&
                             periods[nextIndex].code === current.code
-                        ) {
+                        )
                             nextIndex++;
-                        }
                         next = periods[nextIndex] ?? null;
                         break;
                     }
                 }
-
                 if (!current) {
                     prev =
                         periods.filter((p) => p.endDate <= now).slice(-1)[0] ??
@@ -299,20 +310,10 @@
                         next = null;
                     }
                 }
-
                 return { current, prev, next };
             };
 
             const el = (id) => document.getElementById(id);
-            const WEEKDAY_THAI = [
-                "อาทิตย์",
-                "จันทร์",
-                "อังคาร",
-                "พุธ",
-                "พฤหัสบดี",
-                "ศุกร์",
-                "เสาร์",
-            ];
 
             function renderTodayTable(periods, now = new Date()) {
                 const wrap = el("todayTable");
@@ -334,115 +335,166 @@
                     wrap.insertAdjacentHTML(
                         "beforeend",
                         `
-                    <div class="p-4 rounded-xl border ${bgClass} flex items-center justify-between">
-                        <div class="flex-1">
-                            <div class="font-medium ${textClass}">${
+                        <div class="p-4 rounded-xl border ${bgClass} flex items-center justify-between">
+                            <div class="flex-1">
+                                <div class="font-medium ${textClass}">${
                             p.subject
                         }</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                ${p.teacher ? `ครู${p.teacher}` : ""}${
+                                <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                    ${p.teacher ? `ครู${p.teacher}` : ""}${
                             p.room && !isBreak ? ` • ห้อง ${p.room}` : ""
                         }
+                                </div>
+                            </div>
+                            <div class="mono text-sm text-gray-600 dark:text-gray-400 ml-4">
+                                ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
                             </div>
                         </div>
-                        <div class="mono text-sm text-gray-600 dark:text-gray-400 ml-4">
-                            ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
-                        </div>
-                    </div>
-                `
+                        `
                     );
                 });
             }
 
+            function renderWeekdayTabs() {
+                const tabs = el("weekdayTabs");
+                tabs.innerHTML = "";
+
+                for (let wd = 1; wd <= 5; wd++) {
+                    const label = WEEKDAY_THAI[wd];
+                    const isActive = wd === selectedWd;
+
+                    const btn = document.createElement("button");
+                    btn.className =
+                        "tab-btn px-3 py-2 rounded-xl border text-sm dark:border-gray-800 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800";
+                    btn.setAttribute("aria-current", String(isActive));
+                    btn.innerHTML = `<span class="tab-label">${label}</span>`;
+                    btn.addEventListener("click", () => {
+                        selectedWd = wd;
+                        render(new Date());
+                    });
+
+                    tabs.appendChild(btn);
+                }
+            }
+
+            function toggleLiveBlocks(show) {
+                el("currentBlock").style.display = show ? "" : "none";
+                el("adjacentBlock").style.display = show ? "" : "none";
+            }
+
             function render(now = new Date()) {
+                // นาฬิกาและวันที่จริง
                 el("nowTime").textContent = now.toLocaleTimeString("th-TH", {
                     hour: "2-digit",
                     minute: "2-digit",
                     second: "2-digit",
                 });
-                el("nowDate").textContent = `${
-                    WEEKDAY_THAI[now.getDay()]
-                }ที่ ${now.toLocaleDateString("th-TH", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                })}`;
+                el("nowDate").textContent =
+                    `${WEEKDAY_THAI[now.getDay()]}ที่ ` +
+                    now.toLocaleDateString("th-TH", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    });
 
-                const todayRaw = getTodaySchedule(now);
-                const today = enrichPeriods(todayRaw, now);
-                renderTodayTable(today, now);
+                // สร้างแท็บวัน (อัปเดตสถานะ active)
+                renderWeekdayTabs();
 
-                const { current, prev, next } = findNowPrevNext(today, now);
+                // ชื่อหัวเรื่องของตาราง
+                const isTodaySelected = selectedWd === now.getDay();
+                el("todayTitle").textContent = isTodaySelected
+                    ? "ตารางวันนี้"
+                    : `ตารางวัน${WEEKDAY_THAI[selectedWd]}`;
 
-                // Current period
-                const currentCard = el("currentCard");
-                if (current) {
-                    const isBreak = current.code === "BREAK";
-                    currentCard.className = isBreak
-                        ? "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-700 dark:to-gray-800 rounded-2xl shadow-lg text-white"
-                        : "p-8 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-lg text-white";
+                // เลือกชุดข้อมูลตามวัน
+                const baseDate = new Date(now); // สำหรับคำนวณเวลาเริ่ม-จบ
+                const todayRaw = getScheduleByWd(selectedWd);
+                const today = enrichPeriods(todayRaw, baseDate);
 
-                    el("currentSubject").textContent = current.subject;
-                    el("currentTeacher").textContent = current.teacher
-                        ? `ครู${current.teacher}${
-                              current.room ? ` • ห้อง ${current.room}` : ""
-                          }`
-                        : current.room
-                        ? `ห้อง ${current.room}`
-                        : "";
-                    el("currentTime").textContent = `${fmtHM(
-                        current.startDate
-                    )} - ${fmtHM(current.endDate)}`;
-                    const left = current.endDate - now;
-                    el(
-                        "currentStatus"
-                    ).textContent = `เหลือเวลาอีก ${humanizeMs(left)}`;
-                } else {
-                    currentCard.className =
-                        "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-lg text-white";
-                    el("currentSubject").textContent = "ไม่มีคาบในขณะนี้";
-                    el("currentTeacher").textContent = "—";
-                    el("currentTime").textContent = "—";
-                    el("currentStatus").textContent = "พักผ่อน";
-                }
+                // ตารางรายวิชา
+                renderTodayTable(
+                    today,
+                    isTodaySelected
+                        ? now
+                        : new Date(baseDate.setHours(0, 0, 0, 0))
+                ); // ถ้าไม่ใช่วันนี้ จะไม่ทำ active-highlight
 
-                // Previous
-                if (prev) {
-                    el("prevSubject").textContent = prev.subject;
-                    el("prevTeacher").textContent = prev.teacher
-                        ? `ครู${prev.teacher}`
-                        : "";
-                    el("prevTime").textContent = `${fmtHM(
-                        prev.startDate
-                    )} - ${fmtHM(prev.endDate)}`;
-                    el("prevEnded").textContent = `จบไปแล้ว ${humanizeMs(
-                        now - prev.endDate
-                    )}`;
-                } else {
-                    el("prevSubject").textContent = "—";
-                    el("prevTeacher").textContent = "—";
-                    el("prevTime").textContent = "—";
-                    el("prevEnded").textContent = "—";
-                }
+                // แสดง/ซ่อนบล็อกคาบปัจจุบัน-ก่อนหน้า-ถัดไป
+                toggleLiveBlocks(isTodaySelected);
 
-                // Next
-                if (next) {
-                    el("nextSubject").textContent = next.subject;
-                    el("nextTeacher").textContent = next.teacher
-                        ? `ครู${next.teacher}`
-                        : "";
-                    el("nextTime").textContent = `${fmtHM(
-                        next.startDate
-                    )} - ${fmtHM(next.endDate)}`;
-                    const msUntil = Math.max(0, next.startDate - now);
-                    el("nextCountdown").textContent = `เริ่มในอีก ${humanizeMs(
-                        msUntil
-                    )}`;
-                } else {
-                    el("nextSubject").textContent = "—";
-                    el("nextTeacher").textContent = "—";
-                    el("nextTime").textContent = "—";
-                    el("nextCountdown").textContent = "—";
+                if (isTodaySelected) {
+                    const { current, prev, next } = findNowPrevNext(today, now);
+
+                    // Current period
+                    const currentCard = el("currentCard");
+                    if (current) {
+                        const isBreak = current.code === "BREAK";
+                        currentCard.className = isBreak
+                            ? "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-700 dark:to-gray-800 rounded-2xl shadow-lg text-white"
+                            : "p-8 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-lg text-white";
+
+                        el("currentSubject").textContent = current.subject;
+                        el("currentTeacher").textContent = current.teacher
+                            ? `ครู${current.teacher}${
+                                  current.room ? ` • ห้อง ${current.room}` : ""
+                              }`
+                            : current.room
+                            ? `ห้อง ${current.room}`
+                            : "";
+                        el("currentTime").textContent = `${fmtHM(
+                            current.startDate
+                        )} - ${fmtHM(current.endDate)}`;
+                        const left = current.endDate - now;
+                        el(
+                            "currentStatus"
+                        ).textContent = `เหลือเวลาอีก ${humanizeMs(left)}`;
+                    } else {
+                        currentCard.className =
+                            "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-lg text-white";
+                        el("currentSubject").textContent = "ไม่มีคาบในขณะนี้";
+                        el("currentTeacher").textContent = "—";
+                        el("currentTime").textContent = "—";
+                        el("currentStatus").textContent = "พักผ่อน";
+                    }
+
+                    // Previous
+                    if (prev) {
+                        el("prevSubject").textContent = prev.subject;
+                        el("prevTeacher").textContent = prev.teacher
+                            ? `ครู${prev.teacher}`
+                            : "";
+                        el("prevTime").textContent = `${fmtHM(
+                            prev.startDate
+                        )} - ${fmtHM(prev.endDate)}`;
+                        el("prevEnded").textContent = `จบไปแล้ว ${humanizeMs(
+                            now - prev.endDate
+                        )}`;
+                    } else {
+                        el("prevSubject").textContent = "—";
+                        el("prevTeacher").textContent = "—";
+                        el("prevTime").textContent = "—";
+                        el("prevEnded").textContent = "—";
+                    }
+
+                    // Next
+                    if (next) {
+                        el("nextSubject").textContent = next.subject;
+                        el("nextTeacher").textContent = next.teacher
+                            ? `ครู${next.teacher}`
+                            : "";
+                        el("nextTime").textContent = `${fmtHM(
+                            next.startDate
+                        )} - ${fmtHM(next.endDate)}`;
+                        const msUntil = Math.max(0, next.startDate - now);
+                        el(
+                            "nextCountdown"
+                        ).textContent = `เริ่มในอีก ${humanizeMs(msUntil)}`;
+                    } else {
+                        el("nextSubject").textContent = "—";
+                        el("nextTeacher").textContent = "—";
+                        el("nextTime").textContent = "—";
+                        el("nextCountdown").textContent = "—";
+                    }
                 }
             }
 
