@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="th">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>ตารางเรียน ม.5/1</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap");
+
+            * {
+                font-family: "Prompt", system-ui, -apple-system, sans-serif;
+            }
+
+            .mono {
+                font-variant-numeric: tabular-nums;
+            }
+
+            /* Smooth transitions */
+            * {
+                transition: background-color 0.2s ease, border-color 0.2s ease;
+            }
+        </style>
+    </head>
+    <body
+        class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen"
+    >
+        <div class="max-w-5xl mx-auto p-4 md:p-8">
+            <!-- Header -->
+            <header class="mb-8">
+                <h1
+                    class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-2"
+                >
+                    ตารางเรียน ม.5/1
+                </h1>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    ภาคเรียนที่ 2 โรงเรียนภูเขียว
+                </p>
+            </header>
+
+            <!-- Current Time Card -->
+            <div
+                class="mb-6 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800"
+            >
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <div
+                            class="text-sm text-gray-500 dark:text-gray-400 mb-1"
+                        >
+                            วันนี้
+                        </div>
+                        <div
+                            id="nowDate"
+                            class="text-lg font-medium text-gray-900 dark:text-white"
+                        >
+                            —
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div
+                            class="text-sm text-gray-500 dark:text-gray-400 mb-1"
+                        >
+                            เวลา
+                        </div>
+                        <div
+                            id="nowTime"
+                            class="text-2xl font-semibold mono text-gray-900 dark:text-white"
+                        >
+                            --:--:--
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Period - Large Card -->
+            <div class="mb-6">
+                <div
+                    id="currentCard"
+                    class="p-8 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-lg text-white"
+                >
+                    <div class="text-sm opacity-90 mb-2">กำลังเรียน</div>
+                    <div
+                        id="currentSubject"
+                        class="text-3xl font-semibold mb-2"
+                    >
+                        —
+                    </div>
+                    <div id="currentTeacher" class="text-lg opacity-90 mb-3">
+                        —
+                    </div>
+                    <div
+                        class="flex items-center justify-between flex-wrap gap-4"
+                    >
+                        <div id="currentTime" class="mono text-lg opacity-90">
+                            —
+                        </div>
+                        <div
+                            id="currentStatus"
+                            class="text-sm bg-white/20 px-4 py-2 rounded-full"
+                        >
+                            —
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previous & Next Period -->
+            <div class="grid md:grid-cols-2 gap-4 mb-8">
+                <!-- Previous -->
+                <div
+                    class="p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800"
+                >
+                    <div
+                        class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-3"
+                    >
+                        คาบที่แล้ว
+                    </div>
+                    <div
+                        id="prevSubject"
+                        class="text-xl font-medium text-gray-900 dark:text-white mb-1"
+                    >
+                        —
+                    </div>
+                    <div
+                        id="prevTeacher"
+                        class="text-sm text-gray-600 dark:text-gray-400 mb-2"
+                    >
+                        —
+                    </div>
+                    <div
+                        id="prevTime"
+                        class="mono text-sm text-gray-500 dark:text-gray-500 mb-2"
+                    >
+                        —
+                    </div>
+                    <div
+                        id="prevEnded"
+                        class="text-xs text-gray-400 dark:text-gray-600"
+                    >
+                        —
+                    </div>
+                </div>
+
+                <!-- Next -->
+                <div
+                    class="p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800"
+                >
+                    <div
+                        class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-3"
+                    >
+                        คาบถัดไป
+                    </div>
+                    <div
+                        id="nextSubject"
+                        class="text-xl font-medium text-gray-900 dark:text-white mb-1"
+                    >
+                        —
+                    </div>
+                    <div
+                        id="nextTeacher"
+                        class="text-sm text-gray-600 dark:text-gray-400 mb-2"
+                    >
+                        —
+                    </div>
+                    <div
+                        id="nextTime"
+                        class="mono text-sm text-gray-500 dark:text-gray-500 mb-2"
+                    >
+                        —
+                    </div>
+                    <div
+                        id="nextCountdown"
+                        class="text-xs text-gray-400 dark:text-gray-600"
+                    >
+                        —
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Schedule -->
+            <section>
+                <h2
+                    class="text-xl font-semibold text-gray-900 dark:text-white mb-4"
+                >
+                    ตารางวันนี้
+                </h2>
+                <div id="todayTable" class="space-y-2"></div>
+            </section>
+        </div>
+
+        <script>
+            let SCHEDULE = {};
+
+            async function loadSchedule() {
+                try {
+                    const res = await fetch("./schedule.json");
+                    SCHEDULE = await res.json();
+                    initSchedule();
+                } catch (error) {
+                    console.error("ไม่สามารถโหลดไฟล์ schedule.json:", error);
+                    el(
+                        "todayTable"
+                    ).innerHTML = `<div class="p-6 text-center text-red-500 dark:text-red-400 bg-white dark:bg-gray-900 rounded-2xl border border-dashed border-red-300 dark:border-red-800">ไม่สามารถโหลดตารางเรียนได้</div>`;
+                }
+            }
+
+            const pad = (n) => String(n).padStart(2, "0");
+            const parseHM = (hm, base = new Date()) => {
+                const [H, M] = hm.split(":").map(Number);
+                const d = new Date(base);
+                d.setHours(H, M, 0, 0);
+                return d;
+            };
+            const fmtHM = (d) => pad(d.getHours()) + ":" + pad(d.getMinutes());
+            const humanizeMs = (ms) => {
+                if (ms <= 0) return "ถึงเวลาแล้ว";
+                const totalSec = Math.floor(ms / 1000);
+                const h = Math.floor(totalSec / 3600);
+                const m = Math.floor((totalSec % 3600) / 60);
+                const s = totalSec % 60;
+                if (h > 0) return `${h} ชม. ${m} นาที`;
+                if (m > 0) return `${m} นาที ${s} วินาที`;
+                return `${s} วินาที`;
+            };
+
+            const getTodaySchedule = (now = new Date()) => {
+                const wd = now.getDay();
+                return SCHEDULE[wd] ?? [];
+            };
+
+            const enrichPeriods = (periods, baseDate = new Date()) => {
+                return periods
+                    .map((p) => ({
+                        ...p,
+                        startDate: parseHM(p.start, baseDate),
+                        endDate: parseHM(p.end, baseDate),
+                    }))
+                    .sort((a, b) => a.startDate - b.startDate);
+            };
+
+            const findNowPrevNext = (periods, now = new Date()) => {
+                const N = periods.length;
+                let current = null,
+                    prev = null,
+                    next = null;
+
+                for (let i = 0; i < N; i++) {
+                    const p = periods[i];
+                    if (now >= p.startDate && now < p.endDate) {
+                        current = p;
+                        prev = periods[i - 1] ?? null;
+                        let nextIndex = i + 1;
+                        while (
+                            nextIndex < N &&
+                            periods[nextIndex].code &&
+                            current.code &&
+                            periods[nextIndex].code === current.code
+                        ) {
+                            nextIndex++;
+                        }
+                        next = periods[nextIndex] ?? null;
+                        break;
+                    }
+                }
+
+                if (!current) {
+                    prev =
+                        periods.filter((p) => p.endDate <= now).slice(-1)[0] ??
+                        null;
+                    const firstUpcomingIndex = periods.findIndex(
+                        (p) => p.startDate > now
+                    );
+                    if (firstUpcomingIndex !== -1) {
+                        let nextIndex = firstUpcomingIndex;
+                        if (prev && periods[nextIndex].code === prev.code) {
+                            let j = nextIndex;
+                            while (j < N && periods[j].code === prev.code) j++;
+                            nextIndex = j;
+                        }
+                        next = periods[nextIndex] ?? null;
+                    } else {
+                        next = null;
+                    }
+                }
+
+                return { current, prev, next };
+            };
+
+            const el = (id) => document.getElementById(id);
+            const WEEKDAY_THAI = [
+                "อาทิตย์",
+                "จันทร์",
+                "อังคาร",
+                "พุธ",
+                "พฤหัสบดี",
+                "ศุกร์",
+                "เสาร์",
+            ];
+
+            function renderTodayTable(periods, now = new Date()) {
+                const wrap = el("todayTable");
+                wrap.innerHTML = "";
+                if (!periods.length) {
+                    wrap.innerHTML = `<div class="p-6 text-center text-gray-400 dark:text-gray-600 bg-white dark:bg-gray-900 rounded-2xl border border-dashed border-gray-300 dark:border-gray-800">วันนี้ไม่มีตารางเรียน</div>`;
+                    return;
+                }
+                periods.forEach((p) => {
+                    const active = now >= p.startDate && now < p.endDate;
+                    const isBreak = p.code === "BREAK";
+                    const bgClass = active
+                        ? "bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800"
+                        : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800";
+                    const textClass = isBreak
+                        ? "text-gray-500 dark:text-gray-500"
+                        : "text-gray-900 dark:text-white";
+
+                    wrap.insertAdjacentHTML(
+                        "beforeend",
+                        `
+                    <div class="p-4 rounded-xl border ${bgClass} flex items-center justify-between">
+                        <div class="flex-1">
+                            <div class="font-medium ${textClass}">${
+                            p.subject
+                        }</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                ${p.teacher ? `ครู${p.teacher}` : ""}${
+                            p.room && !isBreak ? ` • ห้อง ${p.room}` : ""
+                        }
+                            </div>
+                        </div>
+                        <div class="mono text-sm text-gray-600 dark:text-gray-400 ml-4">
+                            ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
+                        </div>
+                    </div>
+                `
+                    );
+                });
+            }
+
+            function render(now = new Date()) {
+                el("nowTime").textContent = now.toLocaleTimeString("th-TH", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                });
+                el("nowDate").textContent = `${
+                    WEEKDAY_THAI[now.getDay()]
+                }ที่ ${now.toLocaleDateString("th-TH", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                })}`;
+
+                const todayRaw = getTodaySchedule(now);
+                const today = enrichPeriods(todayRaw, now);
+                renderTodayTable(today, now);
+
+                const { current, prev, next } = findNowPrevNext(today, now);
+
+                // Current period
+                const currentCard = el("currentCard");
+                if (current) {
+                    const isBreak = current.code === "BREAK";
+                    currentCard.className = isBreak
+                        ? "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-700 dark:to-gray-800 rounded-2xl shadow-lg text-white"
+                        : "p-8 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-lg text-white";
+
+                    el("currentSubject").textContent = current.subject;
+                    el("currentTeacher").textContent = current.teacher
+                        ? `ครู${current.teacher}${
+                              current.room ? ` • ห้อง ${current.room}` : ""
+                          }`
+                        : current.room
+                        ? `ห้อง ${current.room}`
+                        : "";
+                    el("currentTime").textContent = `${fmtHM(
+                        current.startDate
+                    )} - ${fmtHM(current.endDate)}`;
+                    const left = current.endDate - now;
+                    el(
+                        "currentStatus"
+                    ).textContent = `เหลือเวลาอีก ${humanizeMs(left)}`;
+                } else {
+                    currentCard.className =
+                        "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-lg text-white";
+                    el("currentSubject").textContent = "ไม่มีคาบในขณะนี้";
+                    el("currentTeacher").textContent = "—";
+                    el("currentTime").textContent = "—";
+                    el("currentStatus").textContent = "พักผ่อน";
+                }
+
+                // Previous
+                if (prev) {
+                    el("prevSubject").textContent = prev.subject;
+                    el("prevTeacher").textContent = prev.teacher
+                        ? `ครู${prev.teacher}`
+                        : "";
+                    el("prevTime").textContent = `${fmtHM(
+                        prev.startDate
+                    )} - ${fmtHM(prev.endDate)}`;
+                    el("prevEnded").textContent = `จบไปแล้ว ${humanizeMs(
+                        now - prev.endDate
+                    )}`;
+                } else {
+                    el("prevSubject").textContent = "—";
+                    el("prevTeacher").textContent = "—";
+                    el("prevTime").textContent = "—";
+                    el("prevEnded").textContent = "—";
+                }
+
+                // Next
+                if (next) {
+                    el("nextSubject").textContent = next.subject;
+                    el("nextTeacher").textContent = next.teacher
+                        ? `ครู${next.teacher}`
+                        : "";
+                    el("nextTime").textContent = `${fmtHM(
+                        next.startDate
+                    )} - ${fmtHM(next.endDate)}`;
+                    const msUntil = Math.max(0, next.startDate - now);
+                    el("nextCountdown").textContent = `เริ่มในอีก ${humanizeMs(
+                        msUntil
+                    )}`;
+                } else {
+                    el("nextSubject").textContent = "—";
+                    el("nextTeacher").textContent = "—";
+                    el("nextTime").textContent = "—";
+                    el("nextCountdown").textContent = "—";
+                }
+            }
+
+            function initSchedule() {
+                render(new Date());
+                setInterval(() => render(new Date()), 1000);
+            }
+
+            loadSchedule();
+        </script>
+    </body>
+</html>
