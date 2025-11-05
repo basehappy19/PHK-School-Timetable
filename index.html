@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="th" class="dark">
+<html lang="th">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>ตารางเรียน ม.5/1</title>
+        <script>
+            window.tailwind = {
+                config: {
+                    darkMode: "class",
+                },
+            };
+        </script>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            (function () {
+                var mq = window.matchMedia("(prefers-color-scheme: dark)");
+                var root = document.documentElement;
+                var apply = function () {
+                    if (mq.matches) root.classList.add("dark");
+                    else root.classList.remove("dark");
+                };
+                apply();
+                if (mq.addEventListener) mq.addEventListener("change", apply);
+                else if (mq.addListener) mq.addListener(apply); // เผื่อเบราเซอร์เก่า
+            })();
+        </script>
         <style>
             @import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap");
             * {
