@@ -1,92 +1,215 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="dark">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>ตารางเรียน ม.5/1</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <style>
-            @import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap");
+            @import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap");
             * {
                 font-family: "Prompt", system-ui, -apple-system, sans-serif;
+            }
+            html,
+            body {
+                overflow: auto;
             }
             .mono {
                 font-variant-numeric: tabular-nums;
             }
             * {
-                transition: background-color 0.2s ease, border-color 0.2s ease;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .tab-btn[aria-current="true"] {
-                background-color: rgb(59 130 246 / 0.1);
-                border-color: rgb(147 197 253);
+                background: linear-gradient(
+                    135deg,
+                    rgb(59 130 246) 0%,
+                    rgb(37 99 235) 100%
+                );
+                color: white;
+                box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+                transform: translateY(-2px);
             }
-            .tab-btn[aria-current="true"] .tab-label {
-                color: rgb(37 99 235);
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .animate-slide-in {
+                animation: slideIn 0.4s ease-out;
+            }
+            @keyframes pulse-glow {
+                0%,
+                100% {
+                    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+                }
+                50% {
+                    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+                }
+            }
+            .current-period-glow {
+                animation: pulse-glow 2s ease-in-out infinite;
+            }
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(229, 231, 235, 0.5);
+            }
+            .dark .glass-effect {
+                background: rgba(30, 41, 59, 0.6);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(71, 85, 105, 0.5);
+            }
+            .progress-bar {
+                transition: width 1s linear;
+            }
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+            .float-animation {
+                animation: float 3s ease-in-out infinite;
+            }
+            .stat-card:hover {
+                transform: translateY(-4px) scale(1.02);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             }
         </style>
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/favicon_io/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon_io/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon_io/favicon-16x16.png"
-        />
-        <meta name="theme-color" content="#0ea5e9" />
-        <link rel="manifest" href="/favicon_io/site.webmanifest" />
-        <link rel="manifest" href="/site.webmanifest" />
     </head>
-    <script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker
-                    .register("/sw.js")
-                    .catch((err) => console.error("SW register failed:", err));
-            });
-        }
-    </script>
-
     <body
-        class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen"
+        class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 text-gray-900 dark:text-gray-100 min-h-screen"
     >
-        <div class="max-w-5xl mx-auto p-4 md:p-8">
-            <!-- Header -->
-            <header class="mb-6">
-                <h1
-                    class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-2"
-                >
-                    ตารางเรียน ม.5/1
-                </h1>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">
-                    ภาคเรียนที่ 2 โรงเรียนภูเขียว
-                </p>
+        <div class="max-w-6xl mx-auto p-4 md:p-8">
+            <!-- Header with Theme Toggle -->
+            <header class="mb-8 animate-slide-in">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h1
+                            class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2"
+                        >
+                            ตารางเรียน ม.5/1
+                        </h1>
+                        <p
+                            class="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-2"
+                        >
+                            <span
+                                class="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"
+                            ></span>
+                            ภาคเรียนที่ 2 โรงเรียนภูเขียว
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div
+                        class="stat-card glass-effect rounded-2xl p-4 text-center"
+                    >
+                        <div
+                            class="text-3xl font-bold text-blue-600 dark:text-blue-400"
+                            id="totalClasses"
+                        >
+                            0
+                        </div>
+                        <div
+                            class="text-xs text-gray-600 dark:text-gray-300 mt-1"
+                        >
+                            คาบเรียนวันนี้
+                        </div>
+                    </div>
+                    <div
+                        class="stat-card glass-effect rounded-2xl p-4 text-center"
+                    >
+                        <div
+                            class="text-3xl font-bold text-green-600 dark:text-green-400"
+                            id="completedClasses"
+                        >
+                            0
+                        </div>
+                        <div
+                            class="text-xs text-gray-600 dark:text-gray-300 mt-1"
+                        >
+                            เรียนไปแล้ว
+                        </div>
+                    </div>
+                    <div
+                        class="stat-card glass-effect rounded-2xl p-4 text-center"
+                    >
+                        <div
+                            class="text-3xl font-bold text-purple-600 dark:text-purple-400"
+                            id="remainingClasses"
+                        >
+                            0
+                        </div>
+                        <div
+                            class="text-xs text-gray-600 dark:text-gray-300 mt-1"
+                        >
+                            คงเหลือ
+                        </div>
+                    </div>
+                    <div
+                        class="stat-card glass-effect rounded-2xl p-4 text-center"
+                    >
+                        <div
+                            class="text-3xl font-bold text-orange-600 dark:text-orange-400"
+                            id="progressPercent"
+                        >
+                            0%
+                        </div>
+                        <div
+                            class="text-xs text-gray-600 dark:text-gray-300 mt-1"
+                        >
+                            ความคืบหน้า
+                        </div>
+                    </div>
+                </div>
             </header>
 
             <!-- Current Time Card -->
             <div
-                class="mb-4 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800"
+                class="mb-6 animate-slide-in glass-effect rounded-3xl p-6 shadow-xl"
             >
                 <div class="flex items-center justify-between flex-wrap gap-4">
-                    <div>
+                    <div class="flex items-center gap-4">
                         <div
-                            class="text-sm text-gray-500 dark:text-gray-400 mb-1"
+                            class="md:order-none w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center"
                         >
-                            วันนี้
+                            <svg
+                                class="w-8 h-8 text-white"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                ></path>
+                            </svg>
                         </div>
-                        <div
-                            id="nowDate"
-                            class="text-lg font-medium text-gray-900 dark:text-white"
-                        >
-                            —
+                        <div>
+                            <div
+                                class="text-sm text-gray-500 dark:text-gray-400 mb-1"
+                            >
+                                วันนี้
+                            </div>
+                            <div
+                                id="nowDate"
+                                class="text-xl font-semibold text-gray-900 dark:text-white"
+                            >
+                                —
+                            </div>
                         </div>
                     </div>
                     <div class="md:text-right">
@@ -97,7 +220,7 @@
                         </div>
                         <div
                             id="nowTime"
-                            class="text-2xl font-semibold mono text-gray-900 dark:text-white"
+                            class="text-3xl font-bold mono bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
                         >
                             --:--:--
                         </div>
@@ -106,168 +229,308 @@
             </div>
 
             <!-- Current Period - Large Card -->
-            <div class="mb-6" id="currentBlock">
+            <div class="mb-6 animate-slide-in" id="currentBlock">
                 <div
                     id="currentCard"
-                    class="p-8 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-lg text-white"
+                    class="p-8 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-3xl shadow-2xl text-white current-period-glow relative overflow-hidden"
                 >
-                    <div class="text-sm opacity-90 mb-2">กำลังเรียน</div>
                     <div
-                        id="currentSubject"
-                        class="text-3xl font-semibold mb-2"
-                    >
-                        —
-                    </div>
-                    <div id="currentTeacher" class="text-lg opacity-90 mb-3">
-                        —
-                    </div>
+                        class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-32 -mt-32"
+                    ></div>
                     <div
-                        class="flex items-center justify-between flex-wrap gap-4"
-                    >
-                        <div id="currentTime" class="mono text-lg opacity-90">
+                        class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-24 -mb-24"
+                    ></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span
+                                class="px-3 py-1 bg-white/20 rounded-full text-sm backdrop-blur-sm"
+                                >กำลังเรียน</span
+                            >
+                        </div>
+                        <div
+                            id="currentSubject"
+                            class="text-4xl font-bold mb-3"
+                        >
                             —
                         </div>
                         <div
-                            id="currentStatus"
-                            class="text-sm bg-white/20 px-4 py-2 rounded-full"
+                            id="currentTeacher"
+                            class="text-xl opacity-90 mb-4"
                         >
                             —
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div
+                            class="mb-4 bg-white/20 rounded-full h-2 overflow-hidden backdrop-blur-sm"
+                        >
+                            <div
+                                id="currentProgress"
+                                class="progress-bar bg-white h-full rounded-full"
+                                style="width: 0%"
+                            ></div>
+                        </div>
+
+                        <div
+                            class="flex items-center justify-between flex-wrap gap-4"
+                        >
+                            <div
+                                id="currentTime"
+                                class="mono text-lg opacity-90"
+                            >
+                                —
+                            </div>
+                            <div
+                                id="currentStatus"
+                                class="text-sm bg-white/20 px-5 py-2 rounded-full backdrop-blur-sm font-medium"
+                            >
+                                —
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Previous & Next Period -->
-            <div class="grid md:grid-cols-2 gap-4 mb-8" id="adjacentBlock">
+            <div
+                class="grid md:grid-cols-2 gap-4 mb-8 animate-slide-in"
+                id="adjacentBlock"
+            >
                 <!-- Previous -->
                 <div
-                    class="p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800"
+                    class="glass-effect rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all"
                 >
-                    <div
-                        class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-3"
-                    >
-                        คาบที่แล้ว
+                    <div class="flex items-center gap-2 mb-3">
+                        <svg
+                            class="w-5 h-5 text-gray-500 dark:text-gray-300"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 19l-7-7 7-7"
+                            ></path>
+                        </svg>
+                        <span
+                            class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-300 font-semibold"
+                            >คาบที่แล้ว</span
+                        >
                     </div>
                     <div
                         id="prevSubject"
-                        class="text-xl font-medium text-gray-900 dark:text-white mb-1"
+                        class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1"
                     >
                         —
                     </div>
                     <div
                         id="prevTeacher"
-                        class="text-sm text-gray-600 dark:text-gray-400 mb-2"
+                        class="text-sm text-gray-600 dark:text-gray-300 mb-2"
                     >
                         —
                     </div>
                     <div
                         id="prevTime"
-                        class="mono text-sm text-gray-500 dark:text-gray-500 mb-2"
+                        class="mono text-sm text-gray-500 dark:text-gray-400 mb-2"
                     >
                         —
                     </div>
                     <div
                         id="prevEnded"
-                        class="text-xs text-gray-400 dark:text-gray-600"
+                        class="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1"
                     >
-                        —
+                        <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                clip-rule="evenodd"
+                            ></path>
+                        </svg>
+                        <span>—</span>
                     </div>
                 </div>
 
                 <!-- Next -->
                 <div
-                    class="p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800"
+                    class="glass-effect rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all"
                 >
-                    <div
-                        class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-3"
-                    >
-                        คาบถัดไป
+                    <div class="flex items-center gap-2 mb-3">
+                        <svg
+                            class="w-5 h-5 text-gray-500 dark:text-gray-300"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5l7 7-7 7"
+                            ></path>
+                        </svg>
+                        <span
+                            class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-300 font-semibold"
+                            >คาบถัดไป</span
+                        >
                     </div>
                     <div
                         id="nextSubject"
-                        class="text-xl font-medium text-gray-900 dark:text-white mb-1"
+                        class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1"
                     >
                         —
                     </div>
                     <div
                         id="nextTeacher"
-                        class="text-sm text-gray-600 dark:text-gray-400 mb-2"
+                        class="text-sm text-gray-600 dark:text-gray-300 mb-2"
                     >
                         —
                     </div>
                     <div
                         id="nextTime"
-                        class="mono text-sm text-gray-500 dark:text-gray-500 mb-2"
+                        class="mono text-sm text-gray-500 dark:text-gray-400 mb-2"
                     >
                         —
                     </div>
                     <div
                         id="nextCountdown"
-                        class="text-xs text-gray-400 dark:text-gray-600"
+                        class="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1"
                     >
-                        —
+                        <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                clip-rule="evenodd"
+                            ></path>
+                        </svg>
+                        <span>—</span>
                     </div>
                 </div>
             </div>
 
-            <section>
+            <section class="animate-slide-in">
                 <!-- Weekday Tabs -->
-                <div class="mb-6">
-                    <div class="flex justify-between">
+                <div class="mb-6 glass-effect rounded-2xl p-4">
+                    <div class="flex items-center justify-between gap-4">
                         <button
                             id="prevDayBtn"
-                            class="px-3 py-2 rounded-xl border"
+                            class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
                         >
-                            ก่อนหน้า
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 19l-7-7 7-7"
+                                ></path>
+                            </svg>
                         </button>
                         <div
                             id="weekdayTabs"
-                            class="flex flex-wrap gap-2"
+                            class="flex flex-wrap gap-2 justify-center"
                         ></div>
                         <button
                             id="nextDayBtn"
-                            class="px-3 py-2 rounded-xl border"
+                            class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
                         >
-                            ถัดไป
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 5l7 7-7 7"
+                                ></path>
+                            </svg>
                         </button>
                     </div>
                 </div>
+
                 <h2
                     id="todayTitle"
-                    class="text-xl font-semibold text-gray-900 dark:text-white mb-4"
+                    class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2"
                 >
+                    <span
+                        class="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"
+                    ></span>
                     ตารางวันนี้
                 </h2>
+
                 <!-- Search Bar -->
                 <div class="mb-4 flex items-center gap-3">
                     <div class="relative flex-1">
+                        <svg
+                            class="absolute left-4 top-3.5 w-5 h-5 text-gray-400 dark:text-gray-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                            ></path>
+                        </svg>
                         <input
                             id="searchInput"
                             type="text"
                             inputmode="search"
                             placeholder="ค้นหาวิชา หรือชื่อครู"
-                            class="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500"
+                            class="w-full rounded-xl border-2 border-gray-200 dark:border-slate-600 glass-effect pl-11 pr-4 py-3 outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                         />
                         <kbd
-                            class="hidden md:block absolute right-3 top-2.5 text-xs px-1.5 py-0.5 rounded border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400"
+                            class="hidden md:block absolute right-3 top-3 text-xs px-2 py-1 rounded-lg glass-effect text-gray-500 dark:text-gray-400 font-semibold"
                             >/</kbd
                         >
                     </div>
                     <button
                         id="clearSearchBtn"
-                        class="px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800"
+                        class="px-4 py-3 rounded-xl glass-effect hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
                     >
-                        ล้าง
+                        <svg
+                            class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"
+                            ></path>
+                        </svg>
                     </button>
                 </div>
+
                 <div id="searchResults" class="space-y-2 mb-6 hidden"></div>
-                <div id="todayTable" class="space-y-2"></div>
+                <div id="todayTable" class="space-y-3"></div>
             </section>
         </div>
 
         <script>
             let SCHEDULE = {};
-            let selectedWd = new Date().getDay(); // 0=อา ... 6=ส
+            let selectedWd = new Date().getDay();
+            let searchTerm = "";
             const WEEKDAY_THAI = [
                 "อาทิตย์",
                 "จันทร์",
@@ -287,7 +550,7 @@
                     console.error("ไม่สามารถโหลดไฟล์ schedule.json:", error);
                     el(
                         "todayTable"
-                    ).innerHTML = `<div class="p-6 text-center text-red-500 dark:text-red-400 bg-white dark:bg-gray-900 rounded-2xl border border-dashed border-red-300 dark:border-red-800">ไม่สามารถโหลดตารางเรียนได้</div>`;
+                    ).innerHTML = `<div class="p-8 text-center text-red-500 dark:text-red-400 glass-effect rounded-2xl border border-dashed border-red-300 dark:border-red-800">ไม่สามารถโหลดตารางเรียนได้</div>`;
                 }
             }
 
@@ -299,8 +562,7 @@
                 return d;
             };
             const fmtHM = (d) => pad(d.getHours()) + ":" + pad(d.getMinutes());
-            // ---------- Search helpers ----------
-            let searchTerm = ""; // สถานะคำค้น
+            const el = (id) => document.getElementById(id);
 
             const escapeHTML = (s) =>
                 s == null
@@ -308,34 +570,29 @@
                     : String(s)
                           .replace(/&/g, "&amp;")
                           .replace(/</g, "&lt;")
-                          .replace(/>/g, "&gt;")
-                          .replace(/"/g, "&quot;")
-                          .replace(/'/g, "&#39;");
+                          .replace(/>/g, "&gt;");
 
-            // สร้าง RegExp จากคำค้น (หนีอักขระพิเศษ)
             const makeQueryRegex = (q) => {
                 if (!q) return null;
                 const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
                 try {
-                    return new RegExp(escaped, "gi"); // case-insensitive สำหรับภาษาอังกฤษ; ภาษาไทยไม่กระทบ
+                    return new RegExp(escaped, "gi");
                 } catch {
                     return null;
                 }
             };
 
-            // ไฮไลต์คำที่ตรงใน text (คืนค่าเป็น HTML ที่ escape แล้ว+mark)
             const highlightHTML = (text, q) => {
                 if (!q) return escapeHTML(text || "");
                 const rx = makeQueryRegex(q);
                 if (!rx) return escapeHTML(text || "");
                 const raw = String(text || "");
-                // ตัดเป็นส่วน ๆ แล้วประกบด้วย <mark>
                 let out = "";
                 let last = 0;
                 for (const m of raw.matchAll(rx)) {
                     const i = m.index ?? 0;
                     out += escapeHTML(raw.slice(last, i));
-                    out += `<mark class="px-1 rounded bg-yellow-200 text-gray-900 dark:bg-yellow-500/70 dark:text-gray-900">${escapeHTML(
+                    out += `<mark class="px-1 rounded bg-yellow-200 text-gray-900 dark:bg-yellow-500/70">${escapeHTML(
                         m[0]
                     )}</mark>`;
                     last = i + m[0].length;
@@ -344,7 +601,6 @@
                 return out;
             };
 
-            // ช่วยดูว่าการ์ดนี้ "ตรงคำค้น" ไหม (เช็คทั้งวิชาและครู)
             const isMatch = (p, q) => {
                 if (!q) return true;
                 const t = q.toLowerCase();
@@ -354,7 +610,6 @@
                 );
             };
 
-            // debounce เล็กน้อยเวลา keyup
             const debounce = (fn, ms = 120) => {
                 let h;
                 return (...args) => {
@@ -373,81 +628,6 @@
                 if (m > 0) return `${m} นาที ${s} วินาที`;
                 return `${s} วินาที`;
             };
-            function renderSearchResults(q) {
-                const box = document.getElementById("searchResults");
-                // ถ้าไม่มีคำค้น: ซ่อนพาเนลแล้วออก
-                if (!q || !q.trim()) {
-                    box.classList.add("hidden");
-                    box.innerHTML = "";
-                    return;
-                }
-
-                const results = [];
-                // ค้นหาเฉพาะวันจันทร์–ศุกร์ (1..5) ตามโค้ดเดิมของแท็บ
-                for (let wd = 1; wd <= 5; wd++) {
-                    const dayPeriods = getScheduleByWd(wd) || [];
-                    // ไม่จำเป็นต้อง enrich เวลา เพราะเราจะแสดงตามสตริง start/end ก็พอ
-                    for (const p of dayPeriods) {
-                        if (isMatch(p, q)) {
-                            results.push({ wd, p });
-                        }
-                    }
-                }
-
-                // เรนเดอร์
-                if (!results.length) {
-                    box.classList.remove("hidden");
-                    box.innerHTML = `
-      <div class="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
-        ไม่พบผลลัพธ์ที่ตรงในสัปดาห์นี้
-      </div>`;
-                    return;
-                }
-
-                // สรุปหัวข้อ
-                const header = `
-    <div class="p-3 rounded-xl bg-gray-100/60 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-800 text-sm text-gray-600 dark:text-gray-300">
-      ผลการค้นหา (ทุกวัน): <span class="font-medium">${results.length}</span> รายการ
-    </div>
-  `;
-
-                const itemsHTML = results
-                    .map(({ wd, p }) => {
-                        const dayBadge = `
-      <span class="text-xs px-2 py-1 rounded-full border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
-        วัน${WEEKDAY_THAI[wd]}
-      </span>
-    `;
-
-                        const subjectHTML = highlightHTML(p.subject, q);
-                        const teacherText = p.teacher ? `ครู${p.teacher}` : "";
-                        const teacherHTML = highlightHTML(teacherText, q);
-                        const roomHTML = p.room
-                            ? ` • ห้อง ${escapeHTML(p.room)}`
-                            : "";
-
-                        return `
-      <div class="p-4 rounded-xl border bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 flex items-center justify-between">
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-1">
-            ${dayBadge}
-            <div class="font-medium text-gray-900 dark:text-white">${subjectHTML}</div>
-          </div>
-          <div class="text-sm text-gray-500 dark:text-gray-400">
-            ${teacherHTML}${roomHTML}
-          </div>
-        </div>
-        <div class="mono text-sm text-gray-600 dark:text-gray-400 ml-4">
-          ${escapeHTML(p.start)} - ${escapeHTML(p.end)}
-        </div>
-      </div>
-    `;
-                    })
-                    .join("");
-
-                box.classList.remove("hidden");
-                box.innerHTML = header + itemsHTML;
-            }
 
             const getScheduleByWd = (wd) => SCHEDULE[wd] ?? [];
 
@@ -497,20 +677,90 @@
                             nextIndex = j;
                         }
                         next = periods[nextIndex] ?? null;
-                    } else {
-                        next = null;
                     }
                 }
                 return { current, prev, next };
             };
 
-            const el = (id) => document.getElementById(id);
+            function updateStats(periods, now) {
+                const classes = periods.filter((p) => p.code !== "BREAK");
+                const completed = classes.filter(
+                    (p) => p.endDate <= now
+                ).length;
+                const total = classes.length;
+                const remaining = total - completed;
+                const percent =
+                    total > 0 ? Math.round((completed / total) * 100) : 0;
+
+                el("totalClasses").textContent = total;
+                el("completedClasses").textContent = completed;
+                el("remainingClasses").textContent = remaining;
+                el("progressPercent").textContent = percent + "%";
+            }
+
+            function renderSearchResults(q) {
+                const box = el("searchResults");
+                if (!q || !q.trim()) {
+                    box.classList.add("hidden");
+                    box.innerHTML = "";
+                    return;
+                }
+
+                const results = [];
+                for (let wd = 1; wd <= 5; wd++) {
+                    const dayPeriods = getScheduleByWd(wd) || [];
+                    for (const p of dayPeriods) {
+                        if (isMatch(p, q)) {
+                            results.push({ wd, p });
+                        }
+                    }
+                }
+
+                if (!results.length) {
+                    box.classList.remove("hidden");
+                    box.innerHTML = `<div class="p-4 rounded-xl glass-effect text-gray-500 dark:text-gray-300 text-center">ไม่พบผลลัพธ์ที่ตรงในสัปดาห์นี้</div>`;
+                    return;
+                }
+
+                const header = `<div class="p-3 rounded-xl glass-effect text-sm text-gray-600 dark:text-gray-200">ผลการค้นหา: <span class="font-semibold text-blue-600 dark:text-blue-400">${results.length}</span> รายการ</div>`;
+
+                const itemsHTML = results
+                    .map(({ wd, p }) => {
+                        const subjectHTML = highlightHTML(p.subject, q);
+                        const teacherText = p.teacher ? `ครู${p.teacher}` : "";
+                        const teacherHTML = highlightHTML(teacherText, q);
+                        const roomHTML = p.room
+                            ? ` • ห้อง ${escapeHTML(p.room)}`
+                            : "";
+
+                        return `
+                    <div class="p-4 rounded-xl glass-effect flex items-center justify-between hover:shadow-lg transition-all">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-medium">
+                                    ${WEEKDAY_THAI[wd]}
+                                </span>
+                                <div class="font-semibold text-gray-900 dark:text-gray-100">${subjectHTML}</div>
+                            </div>
+                            <div class="text-sm text-gray-500 dark:text-gray-300">${teacherHTML}${roomHTML}</div>
+                        </div>
+                        <div class="mono text-sm text-gray-600 dark:text-gray-300 ml-4">${escapeHTML(
+                            p.start
+                        )} - ${escapeHTML(p.end)}</div>
+                    </div>
+                `;
+                    })
+                    .join("");
+
+                box.classList.remove("hidden");
+                box.innerHTML = header + itemsHTML;
+            }
 
             function renderTodayTable(periods, now = new Date()) {
                 const wrap = el("todayTable");
                 wrap.innerHTML = "";
                 if (!periods.length) {
-                    wrap.innerHTML = `<div class="p-6 text-center text-gray-400 dark:text-gray-600 bg-white dark:bg-gray-900 rounded-2xl border border-dashed border-gray-300 dark:border-gray-800">วันนี้ไม่มีตารางเรียน</div>`;
+                    wrap.innerHTML = `<div class="p-8 text-center text-gray-400 dark:text-gray-400 glass-effect rounded-2xl">วันนี้ไม่มีตารางเรียน</div>`;
                     return;
                 }
 
@@ -520,88 +770,91 @@
                     const matched = isMatch(p, searchTerm);
 
                     const bgClass = active
-                        ? "bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800"
-                        : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800";
+                        ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-xl"
+                        : "glass-effect hover:shadow-lg";
 
                     const fadeClass =
-                        !matched && searchTerm ? "opacity-50" : "";
+                        !matched && searchTerm ? "opacity-30" : "";
 
                     const subjectHTML = isBreak
                         ? escapeHTML(p.subject)
                         : highlightHTML(p.subject, searchTerm);
-
                     const teacherText = p.teacher ? `ครู${p.teacher}` : "";
                     const teacherHTML = highlightHTML(teacherText, searchTerm);
-
                     const roomText =
                         p.room && !isBreak ? ` • ห้อง ${p.room}` : "";
                     const roomHTML = escapeHTML(roomText);
+
+                    const progressPercent = active
+                        ? ((now - p.startDate) / (p.endDate - p.startDate)) *
+                          100
+                        : 0;
 
                     wrap.insertAdjacentHTML(
                         "beforeend",
                         isBreak
                             ? `
-      <div class="p-4 rounded-xl border ${bgClass} ${fadeClass} flex items-center justify-center text-center">
-        <div>
-          <div class="font-medium text-gray-900 dark:text-white">
-            ${subjectHTML}
-          </div>
-          <div class="mono text-sm text-gray-600 dark:text-gray-400 mt-1">
-            ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
-          </div>
-        </div>
-      </div>
-    `
+                        <div class="p-5 rounded-2xl ${bgClass} ${fadeClass} flex items-center justify-center text-center transition-all">
+                            <div>
+                                <div class="font-semibold ${
+                                    active
+                                        ? "text-white"
+                                        : "text-gray-900 dark:text-gray-100"
+                                }">
+                                    ${subjectHTML}
+                                </div>
+                                <div class="mono text-sm ${
+                                    active
+                                        ? "text-white/80"
+                                        : "text-gray-600 dark:text-gray-400"
+                                } mt-1">
+                                    ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
+                                </div>
+                            </div>
+                        </div>
+                        `
                             : `
-      <div class="p-4 rounded-xl border ${bgClass} ${fadeClass} flex items-center justify-between">
-        <div class="flex-1">
-          <div class="font-medium text-gray-900 dark:text-white">
-            ${subjectHTML}
-          </div>
-          <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            ${teacherHTML}${roomHTML}
-          </div>
-        </div>
-        <div class="mono text-sm text-gray-600 dark:text-gray-400 ml-4">
-          ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
-        </div>
-      </div>
-    `
+                        <div class="p-5 rounded-2xl ${bgClass} ${fadeClass} transition-all relative overflow-hidden">
+                            ${
+                                active
+                                    ? `<div class="absolute bottom-0 left-0 h-1 bg-white/30 w-full"><div class="h-full bg-white transition-all duration-1000" style="width: ${progressPercent}%"></div></div>`
+                                    : ""
+                            }
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        ${
+                                            active
+                                                ? '<span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>'
+                                                : ""
+                                        }
+                                        <div class="font-semibold text-lg ${
+                                            active
+                                                ? "text-white"
+                                                : "text-gray-900 dark:text-gray-100"
+                                        }">
+                                            ${subjectHTML}
+                                        </div>
+                                    </div>
+                                    <div class="text-sm ${
+                                        active
+                                            ? "text-white/80"
+                                            : "text-gray-500 dark:text-gray-300"
+                                    } mt-1">
+                                        ${teacherHTML}${roomHTML}
+                                    </div>
+                                </div>
+                                <div class="mono text-sm ${
+                                    active
+                                        ? "text-white/90"
+                                        : "text-gray-600 dark:text-gray-300"
+                                } ml-4">
+                                    ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
+                                </div>
+                            </div>
+                        </div>
+                        `
                     );
-                });
-            }
-
-            el("prevDayBtn").onclick = () => {
-                if (selectedWd > 1) {
-                    selectedWd--;
-                    render(new Date());
-                }
-            };
-
-            el("nextDayBtn").onclick = () => {
-                if (selectedWd < 5) {
-                    selectedWd++;
-                    render(new Date());
-                }
-            };
-
-            function updateDayButtons() {
-                const prevBtn = el("prevDayBtn");
-                const nextBtn = el("nextDayBtn");
-
-                prevBtn.disabled = selectedWd <= 1;
-                nextBtn.disabled = selectedWd >= 5;
-
-                // เพิ่มคลาสแสดงสถานะ disabled ดูสวยขึ้น
-                [prevBtn, nextBtn].forEach((btn) => {
-                    if (btn.disabled) {
-                        btn.classList.add("opacity-50", "cursor-not-allowed");
-                    } else {
-                        btn.classList.remove(
-                            "opacity-50",
-                            "cursor-not-allowed"
-                        );
-                    }
                 });
             }
 
@@ -615,7 +868,7 @@
 
                     const btn = document.createElement("button");
                     btn.className =
-                        "tab-btn px-3 py-2 rounded-xl border text-sm dark:border-gray-800 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800";
+                        "tab-btn px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105";
                     btn.setAttribute("aria-current", String(isActive));
                     btn.innerHTML = `<span class="tab-label">${label}</span>`;
                     btn.addEventListener("click", () => {
@@ -628,13 +881,31 @@
                 updateDayButtons();
             }
 
+            function updateDayButtons() {
+                const prevBtn = el("prevDayBtn");
+                const nextBtn = el("nextDayBtn");
+
+                prevBtn.disabled = selectedWd <= 1;
+                nextBtn.disabled = selectedWd >= 5;
+
+                [prevBtn, nextBtn].forEach((btn) => {
+                    if (btn.disabled) {
+                        btn.classList.add("opacity-30", "cursor-not-allowed");
+                    } else {
+                        btn.classList.remove(
+                            "opacity-30",
+                            "cursor-not-allowed"
+                        );
+                    }
+                });
+            }
+
             function toggleLiveBlocks(show) {
                 el("currentBlock").style.display = show ? "" : "none";
                 el("adjacentBlock").style.display = show ? "" : "none";
             }
 
             function render(now = new Date()) {
-                // นาฬิกาและวันที่จริง
                 el("nowTime").textContent = now.toLocaleTimeString("th-TH", {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -648,22 +919,23 @@
                         day: "numeric",
                     });
 
-                // สร้างแท็บวัน (อัปเดตสถานะ active)
                 renderWeekdayTabs();
                 renderSearchResults(searchTerm);
 
-                // ชื่อหัวเรื่องของตาราง
                 const isTodaySelected = selectedWd === now.getDay();
-                el("todayTitle").textContent = isTodaySelected
-                    ? "ตารางวันนี้"
-                    : `ตารางวัน${WEEKDAY_THAI[selectedWd]}`;
+                el("todayTitle").innerHTML = `
+                <span class="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></span>
+                ${
+                    isTodaySelected
+                        ? "ตารางวันนี้"
+                        : `ตารางวัน${WEEKDAY_THAI[selectedWd]}`
+                }
+            `;
 
-                // เลือกชุดข้อมูลตามวัน
-                const baseDate = new Date(now); // สำหรับคำนวณเวลาเริ่ม-จบ
+                const baseDate = new Date(now);
                 const todayRaw = getScheduleByWd(selectedWd);
                 const today = enrichPeriods(todayRaw, baseDate);
 
-                // ตารางรายวิชา
                 renderTodayTable(
                     today,
                     isTodaySelected
@@ -671,19 +943,28 @@
                         : new Date(baseDate.setHours(0, 0, 0, 0))
                 );
 
-                // แสดง/ซ่อนบล็อกคาบปัจจุบัน-ก่อนหน้า-ถัดไป
+                if (isTodaySelected) {
+                    updateStats(today, now);
+                }
+
                 toggleLiveBlocks(isTodaySelected);
 
                 if (isTodaySelected) {
                     const { current, prev, next } = findNowPrevNext(today, now);
 
-                    // Current period
                     const currentCard = el("currentCard");
                     if (current) {
                         const isBreak = current.code === "BREAK";
                         currentCard.className = isBreak
-                            ? "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-700 dark:to-gray-800 rounded-2xl shadow-lg text-white"
-                            : "p-8 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-lg text-white";
+                            ? "p-8 bg-gradient-to-br from-gray-500 to-gray-600 dark:from-gray-700 dark:to-gray-800 rounded-3xl shadow-2xl text-white relative overflow-hidden"
+                            : "p-8 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-3xl shadow-2xl text-white current-period-glow relative overflow-hidden";
+
+                        const progressPercent =
+                            ((now - current.startDate) /
+                                (current.endDate - current.startDate)) *
+                            100;
+                        el("currentProgress").style.width =
+                            progressPercent + "%";
 
                         el("currentSubject").textContent = current.subject;
                         el("currentTeacher").textContent = current.teacher
@@ -702,14 +983,14 @@
                         ).textContent = `เหลือเวลาอีก ${humanizeMs(left)}`;
                     } else {
                         currentCard.className =
-                            "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-lg text-white";
+                            "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-800 dark:to-gray-900 rounded-3xl shadow-2xl text-white relative overflow-hidden";
+                        el("currentProgress").style.width = "0%";
                         el("currentSubject").textContent = "ไม่มีคาบในขณะนี้";
                         el("currentTeacher").textContent = "—";
                         el("currentTime").textContent = "—";
                         el("currentStatus").textContent = "พักผ่อน";
                     }
 
-                    // Previous
                     if (prev) {
                         el("prevSubject").textContent = prev.subject;
                         el("prevTeacher").textContent = prev.teacher
@@ -718,17 +999,19 @@
                         el("prevTime").textContent = `${fmtHM(
                             prev.startDate
                         )} - ${fmtHM(prev.endDate)}`;
-                        el("prevEnded").textContent = `จบไปแล้ว ${humanizeMs(
-                            now - prev.endDate
-                        )}`;
+                        el("prevEnded").innerHTML = `
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>จบไปแล้ว ${humanizeMs(now - prev.endDate)}</span>
+                    `;
                     } else {
                         el("prevSubject").textContent = "—";
                         el("prevTeacher").textContent = "—";
                         el("prevTime").textContent = "—";
-                        el("prevEnded").textContent = "—";
+                        el("prevEnded").innerHTML = "—";
                     }
 
-                    // Next
                     if (next) {
                         el("nextSubject").textContent = next.subject;
                         el("nextTeacher").textContent = next.teacher
@@ -738,35 +1021,43 @@
                             next.startDate
                         )} - ${fmtHM(next.endDate)}`;
                         const msUntil = Math.max(0, next.startDate - now);
-                        el(
-                            "nextCountdown"
-                        ).textContent = `เริ่มในอีก ${humanizeMs(msUntil)}`;
+                        el("nextCountdown").innerHTML = `
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>เริ่มในอีก ${humanizeMs(msUntil)}</span>
+                    `;
                     } else {
                         el("nextSubject").textContent = "—";
                         el("nextTeacher").textContent = "—";
                         el("nextTime").textContent = "—";
-                        el("nextCountdown").textContent = "—";
+                        el("nextCountdown").innerHTML = "—";
                     }
                 }
             }
 
-            function initSchedule() {
-                render(new Date());
-                setInterval(() => render(new Date()), 1000);
-            }
-            // ---------- Wire search input ----------
-            const searchInput = () => document.getElementById("searchInput");
-            const clearSearchBtn = () =>
-                document.getElementById("clearSearchBtn");
+            el("prevDayBtn").onclick = () => {
+                if (selectedWd > 1) {
+                    selectedWd--;
+                    render(new Date());
+                }
+            };
+
+            el("nextDayBtn").onclick = () => {
+                if (selectedWd < 5) {
+                    selectedWd++;
+                    render(new Date());
+                }
+            };
 
             const applySearch = debounce(() => {
-                searchTerm = (searchInput()?.value || "").trim();
+                searchTerm = (el("searchInput")?.value || "").trim();
                 render(new Date());
             }, 120);
 
             window.addEventListener("DOMContentLoaded", () => {
-                const inp = searchInput();
-                const clr = clearSearchBtn();
+                const inp = el("searchInput");
+                const clr = el("clearSearchBtn");
                 if (inp) {
                     inp.addEventListener("input", applySearch);
                 }
@@ -797,6 +1088,11 @@
                     }
                 });
             });
+
+            function initSchedule() {
+                render(new Date());
+                setInterval(() => render(new Date()), 1000);
+            }
 
             loadSchedule();
         </script>
