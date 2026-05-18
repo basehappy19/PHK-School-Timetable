@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>ตารางเรียน ม.5/1</title>
+        <title>ตารางเรียน ม.6/1</title>
         <script>
             window.tailwind = {
                 config: {
@@ -117,7 +117,7 @@
                         <h1
                             class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2"
                         >
-                            ตารางเรียน ม.5/1
+                            ตารางเรียน ม.6/1
                         </h1>
                         <p
                             class="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-2"
@@ -125,7 +125,7 @@
                             <span
                                 class="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"
                             ></span>
-                            ภาคเรียนที่ 2 โรงเรียนภูเขียว
+                            ภาคเรียนที่ 1 โรงเรียนภูเขียว
                         </p>
                     </div>
                 </div>
@@ -242,7 +242,7 @@
                             id="nowTime"
                             class="text-3xl font-bold mono bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
                         >
-                            --:--:--
+                            --:--:-- --
                         </div>
                     </div>
                 </div>
@@ -581,7 +581,17 @@
                 d.setHours(H, M, 0, 0);
                 return d;
             };
-            const fmtHM = (d) => pad(d.getHours()) + ":" + pad(d.getMinutes());
+
+            // แปลงเวลาเป็นรูปแบบ 12 ชั่วโมง พร้อม AM/PM
+            const fmtHM = (d) => {
+                let h = d.getHours();
+                const m = pad(d.getMinutes());
+                const ampm = h >= 12 ? "PM" : "AM";
+                h = h % 12;
+                if (h === 0) h = 12;
+                return `${pad(h)}:${m} ${ampm}`;
+            };
+
             const el = (id) => document.getElementById(id);
 
             const escapeHTML = (s) =>
@@ -753,6 +763,15 @@
                             ? ` • ห้อง ${escapeHTML(p.room)}`
                             : "";
 
+                        // แปลงเวลา start/end จาก string "HH:MM" เป็น 12 ชั่วโมง
+                        const fmtStr = (hm) => {
+                            if (!hm) return "";
+                            const [H, M] = hm.split(":").map(Number);
+                            const ampm = H >= 12 ? "PM" : "AM";
+                            const h12 = H % 12 || 12;
+                            return `${pad(h12)}:${pad(M)} ${ampm}`;
+                        };
+
                         return `
                     <div class="p-4 rounded-xl glass-effect flex items-center justify-between hover:shadow-lg transition-all">
                         <div class="flex-1">
@@ -764,9 +783,7 @@
                             </div>
                             <div class="text-sm text-gray-500 dark:text-gray-300">${teacherHTML}${roomHTML}</div>
                         </div>
-                        <div class="mono text-sm text-gray-600 dark:text-gray-300 ml-4">${escapeHTML(
-                            p.start
-                        )} - ${escapeHTML(p.end)}</div>
+                        <div class="mono text-sm text-gray-600 dark:text-gray-300 ml-4">${fmtStr(p.start)} - ${fmtStr(p.end)}</div>
                     </div>
                 `;
                     })
@@ -925,12 +942,19 @@
                 el("adjacentBlock").style.display = show ? "" : "none";
             }
 
+            // แปลงเวลาปัจจุบันเป็น 12 ชั่วโมง พร้อม AM/PM และวินาที
+            const fmt12HourWithSeconds = (d) => {
+                let h = d.getHours();
+                const m = pad(d.getMinutes());
+                const s = pad(d.getSeconds());
+                const ampm = h >= 12 ? "PM" : "AM";
+                h = h % 12;
+                if (h === 0) h = 12;
+                return `${pad(h)}:${m}:${s} ${ampm}`;
+            };
+
             function render(now = new Date()) {
-                el("nowTime").textContent = now.toLocaleTimeString("th-TH", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                });
+                el("nowTime").textContent = fmt12HourWithSeconds(now);
                 el("nowDate").textContent =
                     `${WEEKDAY_THAI[now.getDay()]}ที่ ` +
                     now.toLocaleDateString("th-TH", {

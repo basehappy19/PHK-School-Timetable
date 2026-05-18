@@ -3,33 +3,33 @@
         {
             "start": "08:30",
             "end": "09:25",
-            "subject": "ว32226",
-            "code": "ว32226",
-            "teacher": "สุรางค์รัตน์",
+            "subject": "ค33101",
+            "code": "ค33101",
+            "teacher": "วราภรณ์",
             "room": "SCI206"
         },
         {
             "start": "09:25",
             "end": "10:20",
-            "subject": "ว30107",
-            "code": "ว30107",
-            "teacher": "ชินวุฒิ",
+            "subject": "ค33101",
+            "code": "ค33101",
+            "teacher": "วราภรณ์",
             "room": "SCI206"
         },
         {
             "start": "10:20",
             "end": "11:15",
-            "subject": "ว30107",
-            "code": "ว30107",
-            "teacher": "ชินวุฒิ",
+            "subject": "ว33249",
+            "code": "ว33249",
+            "teacher": "กันธิชา",
             "room": "SCI206"
         },
         {
             "start": "11:15",
             "end": "12:10",
-            "subject": "ค32202",
-            "code": "ค32202",
-            "teacher": "วุฒิไกร",
+            "subject": "ว33249",
+            "code": "ว33249",
+            "teacher": "กันธิชา",
             "room": "SCI206"
         },
         {
@@ -41,66 +41,60 @@
         {
             "start": "13:05",
             "end": "14:00",
-            "subject": "ท32102",
-            "code": "ท32102",
-            "teacher": "ณัฐวุฒิ",
-            "room": "SCI206"
+            "subject": "ศ33101",
+            "code": "ศ33101",
+            "teacher": "ละมัย",
+            "room": "418"
         },
         {
             "start": "14:00",
             "end": "14:55",
-            "subject": "อ32102",
-            "code": "อ32102",
-            "teacher": "พัชราภรณ์",
-            "room": "SCI206"
+            "subject": "ว30265",
+            "code": "ว30265",
+            "teacher": "มาลินี",
+            "room": "SCI308"
         },
         {
             "start": "14:55",
             "end": "15:50",
-            "subject": "ศ32102",
-            "code": "ศ32102",
-            "teacher": "จิรกานต์",
-            "room": "621"
-        },
-        {
-            "start": "15:50",
-            "end": "16:45",
-            "subject": "ต.ทุจริต ที่ปรึกษาประจำชั้น",
-            "code": "HOMEROOM"
+            "subject": "ว30265",
+            "code": "ว30265",
+            "teacher": "มาลินี",
+            "room": "SCI308"
         }
     ],
     "2": [
         {
             "start": "08:30",
             "end": "09:25",
-            "subject": "ว32208",
-            "code": "ว32208",
-            "teacher": "ศักราช",
+            "subject": "ว33227",
+            "code": "ว33227",
+            "teacher": "สุรางค์รัตน์",
             "room": "SCI206"
         },
         {
             "start": "09:25",
             "end": "10:20",
-            "subject": "ว32208",
-            "code": "ว32208",
-            "teacher": "ศักราช",
+            "subject": "ว33227",
+            "code": "ว33227",
+            "teacher": "สุรางค์รัตน์",
             "room": "SCI206"
         },
         {
             "start": "10:20",
             "end": "11:15",
-            "subject": "ส32102",
-            "code": "ส32102",
-            "teacher": "กิติรัตน์",
-            "room": "607"
+            "subject": "ว33209",
+            "code": "ว33209",
+            "teacher": "วรพล",
+            "room": "SCI206"
         },
         {
             "start": "11:15",
             "end": "12:10",
-            "subject": "พว32102",
-            "code": "พว32102",
-            "teacher": "สุธี",
-            "room": "อาคาร7"
+            "subject": "ว33209",
+            "code": "ว33209",
+            "teacher": "วรพล",
+            "room": "SCI206"
         },
         {
             "start": "12:10",
@@ -111,66 +105,60 @@
         {
             "start": "13:05",
             "end": "14:00",
-            "subject": "ว30107",
-            "code": "ว30107",
-            "teacher": "ชินวุฒิ",
+            "subject": "ค33201",
+            "code": "ค33201",
+            "teacher": "วราภรณ์",
             "room": "SCI206"
         },
         {
             "start": "14:00",
             "end": "14:55",
-            "subject": "I32202",
-            "code": "I32202",
-            "teacher": "กันธิชา",
+            "subject": "ส33101",
+            "code": "ส33101",
+            "teacher": "อนุชิต",
             "room": "SCI206"
         },
         {
             "start": "14:55",
             "end": "15:50",
-            "subject": "I32202",
-            "code": "I32202",
-            "teacher": "กันธิชา",
-            "room": "SCI206"
-        },
-        {
-            "start": "15:50",
-            "end": "16:45",
-            "subject": "แนะแนว",
-            "code": "GUIDANCE"
+            "subject": "พ33101",
+            "code": "พ33101",
+            "teacher": "ณัฐพงษ์",
+            "room": "อาคาร7-2"
         }
     ],
     "3": [
         {
             "start": "08:30",
             "end": "09:25",
-            "subject": "ค32202",
-            "code": "ค32202",
-            "teacher": "วุฒิไกร",
+            "subject": "ส33101",
+            "code": "ส33101",
+            "teacher": "อนุชิต",
             "room": "SCI206"
         },
         {
             "start": "09:25",
             "end": "10:20",
-            "subject": "ค32202",
-            "code": "ค32202",
-            "teacher": "วุฒิไกร",
+            "subject": "อ33101",
+            "code": "อ33101",
+            "teacher": "วิโรจน์",
             "room": "SCI206"
         },
         {
             "start": "10:20",
             "end": "11:15",
-            "subject": "ว30221",
-            "code": "ว30221",
-            "teacher": "มงคล",
-            "room": "COM-2"
+            "subject": "ว33227",
+            "code": "ว33227",
+            "teacher": "สุรางค์รัตน์",
+            "room": "SCI206"
         },
         {
             "start": "11:15",
             "end": "12:10",
-            "subject": "ท32102",
-            "code": "ท32102",
-            "teacher": "ณัฐวุฒิ",
-            "room": "SCI206"
+            "subject": "อ33210",
+            "code": "อ33210",
+            "teacher": "อภิญญา",
+            "room": "212"
         },
         {
             "start": "12:10",
@@ -181,23 +169,23 @@
         {
             "start": "13:05",
             "end": "14:00",
-            "subject": "ว32226",
-            "code": "ว32226",
-            "teacher": "สุรางค์รัตน์",
+            "subject": "ค33201",
+            "code": "ค33201",
+            "teacher": "วราภรณ์",
             "room": "SCI206"
         },
         {
             "start": "14:00",
             "end": "14:55",
-            "subject": "ว32226",
-            "code": "ว32226",
-            "teacher": "สุรางค์รัตน์",
+            "subject": "ค33201",
+            "code": "ค33201",
+            "teacher": "วราภรณ์",
             "room": "SCI206"
         },
         {
             "start": "14:55",
             "end": "15:50",
-            "subject": "ลส. นน. ยว. รด.",
+            "subject": "ลส.นน.ยว. บพ.รด.",
             "code": "ACTIVITY"
         }
     ],
@@ -205,33 +193,33 @@
         {
             "start": "08:30",
             "end": "09:25",
-            "subject": "ว32246",
-            "code": "ว32246",
-            "teacher": "กอบแก้ว",
+            "subject": "ท33101",
+            "code": "ท33101",
+            "teacher": "คมสัน",
             "room": "SCI206"
         },
         {
             "start": "09:25",
             "end": "10:20",
-            "subject": "ค32102",
-            "code": "ค32102",
-            "teacher": "วุฒิไกร",
-            "room": "SCI206"
+            "subject": "แนะแนว",
+            "code": "GUIDANCE",
+            "teacher": "ดามพ์",
+            "room": "311"
         },
         {
             "start": "10:20",
             "end": "11:15",
-            "subject": "ค32102",
-            "code": "ค32102",
-            "teacher": "วุฒิไกร",
+            "subject": "ว33249",
+            "code": "ว33249",
+            "teacher": "กันธิชา",
             "room": "SCI206"
         },
         {
             "start": "11:15",
             "end": "12:10",
-            "subject": "อ32102",
-            "code": "อ32102",
-            "teacher": "พัชราภรณ์",
+            "subject": "ว33249",
+            "code": "ว33249",
+            "teacher": "กันธิชา",
             "room": "SCI206"
         },
         {
@@ -243,17 +231,17 @@
         {
             "start": "13:05",
             "end": "14:00",
-            "subject": "ว32208",
-            "code": "ว32208",
-            "teacher": "ศักราช",
+            "subject": "ค30203",
+            "code": "ค30203",
+            "teacher": "ปรีชากร",
             "room": "SCI206"
         },
         {
             "start": "14:00",
             "end": "14:55",
-            "subject": "ว32208",
-            "code": "ว32208",
-            "teacher": "ศักราช",
+            "subject": "ค30203",
+            "code": "ค30203",
+            "teacher": "ปรีชากร",
             "room": "SCI206"
         },
         {
@@ -267,34 +255,34 @@
         {
             "start": "08:30",
             "end": "09:25",
-            "subject": "ว32246",
-            "code": "ว32246",
-            "teacher": "กอบแก้ว",
+            "subject": "ว33209",
+            "code": "ว33209",
+            "teacher": "วรพล",
             "room": "SCI206"
         },
         {
             "start": "09:25",
             "end": "10:20",
-            "subject": "ว32246",
-            "code": "ว32246",
-            "teacher": "กอบแก้ว",
+            "subject": "ว33209",
+            "code": "ว33209",
+            "teacher": "วรพล",
             "room": "SCI206"
         },
         {
             "start": "10:20",
             "end": "11:15",
-            "subject": "ว30203",
-            "code": "ว30203",
-            "teacher": "ศักราช",
-            "room": "SCI207"
+            "subject": "ท33101",
+            "code": "ท33101",
+            "teacher": "คมสัน",
+            "room": "SCI206"
         },
         {
             "start": "11:15",
             "end": "12:10",
-            "subject": "ว30203",
-            "code": "ว30203",
-            "teacher": "ศักราช",
-            "room": "SCI207"
+            "subject": "ว33181",
+            "code": "ว33181",
+            "teacher": "พัชรินทร์",
+            "room": "COM-3"
         },
         {
             "start": "12:10",
@@ -305,25 +293,23 @@
         {
             "start": "13:05",
             "end": "14:00",
-            "subject": "ส32102",
-            "code": "ส32102",
-            "teacher": "กิติรัตน์",
-            "room": "607"
+            "subject": "อ33101",
+            "code": "อ33101",
+            "teacher": "วิโรจน์",
+            "room": "SCI206"
         },
         {
             "start": "14:00",
             "end": "14:55",
-            "subject": "อ30216",
-            "code": "อ30216",
-            "teacher": "พัชราภรณ์",
-            "room": "213"
+            "subject": "เสริมภาษาอังกฤษและวิชาการ",
+            "code": "SUPPLEMENTARY"
         },
         {
             "start": "14:55",
             "end": "15:50",
-            "subject": "ส32104",
-            "code": "ส32104",
-            "teacher": "นรินทร",
+            "subject": "ส33241",
+            "code": "ส33241",
+            "teacher": "สุรางค์รัตน์",
             "room": "SCI206"
         }
     ]
