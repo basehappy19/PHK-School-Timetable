@@ -1,15 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
     * {
-        @apply transition-all duration-300;
         font-family: "Prompt", system-ui, -apple-system, sans-serif;
     }
     
-    html, body {
-        @apply overflow-auto min-h-screen;
+    body {
+        @apply transition-colors duration-300 overflow-auto min-h-screen;
     }
 }
 
