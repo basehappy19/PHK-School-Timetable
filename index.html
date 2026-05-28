@@ -4,14 +4,9 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>ตารางเรียน ม.6/1</title>
-        <script>
-            window.tailwind = {
-                config: {
-                    darkMode: "class",
-                },
-            };
-        </script>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico">
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+        <link rel="manifest" href="/site.webmanifest">
         <script>
             (function () {
                 var mq = window.matchMedia("(prefers-color-scheme: dark)");
@@ -22,109 +17,21 @@
                 };
                 apply();
                 if (mq.addEventListener) mq.addEventListener("change", apply);
-                else if (mq.addListener) mq.addListener(apply); // เผื่อเบราเซอร์เก่า
+                else if (mq.addListener) mq.addListener(apply);
             })();
         </script>
-        <style>
-            @import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap");
-            * {
-                font-family: "Prompt", system-ui, -apple-system, sans-serif;
-            }
-            html,
-            body {
-                overflow: auto;
-            }
-            .mono {
-                font-variant-numeric: tabular-nums;
-            }
-            * {
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            .tab-btn[aria-current="true"] {
-                background: linear-gradient(
-                    135deg,
-                    rgb(59 130 246) 0%,
-                    rgb(37 99 235) 100%
-                );
-                color: white;
-                box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
-                transform: translateY(-2px);
-            }
-            @keyframes slideIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            .animate-slide-in {
-                animation: slideIn 0.4s ease-out;
-            }
-            @keyframes pulse-glow {
-                0%,
-                100% {
-                    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-                }
-                50% {
-                    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
-                }
-            }
-            .current-period-glow {
-                animation: pulse-glow 2s ease-in-out infinite;
-            }
-            .glass-effect {
-                background: rgba(255, 255, 255, 0.8);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(229, 231, 235, 0.5);
-            }
-            .dark .glass-effect {
-                background: rgba(30, 41, 59, 0.6);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(71, 85, 105, 0.5);
-            }
-            .progress-bar {
-                transition: width 1s linear;
-            }
-            @keyframes float {
-                0%,
-                100% {
-                    transform: translateY(0px);
-                }
-                50% {
-                    transform: translateY(-10px);
-                }
-            }
-            .float-animation {
-                animation: float 3s ease-in-out infinite;
-            }
-            .stat-card:hover {
-                transform: translateY(-4px) scale(1.02);
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            }
-        </style>
     </head>
-    <body
-        class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 text-gray-900 dark:text-gray-100 min-h-screen"
-    >
+    <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 text-gray-900 dark:text-gray-100 min-h-screen">
         <div class="max-w-6xl mx-auto p-4 md:p-8">
-            <!-- Header with Theme Toggle -->
+            <!-- Header -->
             <header class="mb-8 animate-slide-in">
                 <div class="flex items-center justify-between mb-4">
                     <div>
-                        <h1
-                            class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2"
-                        >
+                        <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                             ตารางเรียน ม.6/1
                         </h1>
-                        <p
-                            class="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-2"
-                        >
-                            <span
-                                class="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"
-                            ></span>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-2">
+                            <span class="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                             ภาคเรียนที่ 1 โรงเรียนภูเขียว
                         </p>
                     </div>
@@ -132,412 +39,134 @@
 
                 <!-- Stats Cards -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                    <div
-                        class="stat-card glass-effect rounded-2xl p-4 text-center"
-                    >
-                        <div
-                            class="text-3xl font-bold text-blue-600 dark:text-blue-400"
-                            id="totalClasses"
-                        >
-                            0
-                        </div>
-                        <div
-                            class="text-xs text-gray-600 dark:text-gray-300 mt-1"
-                        >
-                            คาบเรียนวันนี้
-                        </div>
+                    <div class="stat-card glass-effect rounded-2xl p-4 text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400" id="totalClasses">0</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-300 mt-1">คาบเรียนวันนี้</div>
                     </div>
-                    <div
-                        class="stat-card glass-effect rounded-2xl p-4 text-center"
-                    >
-                        <div
-                            class="text-3xl font-bold text-green-600 dark:text-green-400"
-                            id="completedClasses"
-                        >
-                            0
-                        </div>
-                        <div
-                            class="text-xs text-gray-600 dark:text-gray-300 mt-1"
-                        >
-                            เรียนไปแล้ว
-                        </div>
+                    <div class="stat-card glass-effect rounded-2xl p-4 text-center">
+                        <div class="text-3xl font-bold text-green-600 dark:text-green-400" id="completedClasses">0</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-300 mt-1">เรียนไปแล้ว</div>
                     </div>
-                    <div
-                        class="stat-card glass-effect rounded-2xl p-4 text-center"
-                    >
-                        <div
-                            class="text-3xl font-bold text-purple-600 dark:text-purple-400"
-                            id="remainingClasses"
-                        >
-                            0
-                        </div>
-                        <div
-                            class="text-xs text-gray-600 dark:text-gray-300 mt-1"
-                        >
-                            คงเหลือ
-                        </div>
+                    <div class="stat-card glass-effect rounded-2xl p-4 text-center">
+                        <div class="text-3xl font-bold text-purple-600 dark:text-purple-400" id="remainingClasses">0</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-300 mt-1">คงเหลือ</div>
                     </div>
-                    <div
-                        class="stat-card glass-effect rounded-2xl p-4 text-center"
-                    >
-                        <div
-                            class="text-3xl font-bold text-orange-600 dark:text-orange-400"
-                            id="progressPercent"
-                        >
-                            0%
-                        </div>
-                        <div
-                            class="text-xs text-gray-600 dark:text-gray-300 mt-1"
-                        >
-                            ความคืบหน้า
-                        </div>
+                    <div class="stat-card glass-effect rounded-2xl p-4 text-center">
+                        <div class="text-3xl font-bold text-orange-600 dark:text-orange-400" id="progressPercent">0%</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-300 mt-1">ความคืบหน้า</div>
                     </div>
                 </div>
             </header>
 
             <!-- Current Time Card -->
-            <div
-                class="mb-6 animate-slide-in glass-effect rounded-3xl p-6 shadow-xl"
-            >
+            <div class="mb-6 animate-slide-in glass-effect rounded-3xl p-6 shadow-xl">
                 <div class="flex items-center justify-between flex-wrap gap-4">
                     <div class="flex items-center gap-4">
-                        <div
-                            class="md:order-none w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center"
-                        >
-                            <svg
-                                class="w-8 h-8 text-white"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                ></path>
+                        <div class="md:order-none w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
                         </div>
                         <div>
-                            <div
-                                class="text-sm text-gray-500 dark:text-gray-400 mb-1"
-                            >
-                                วันนี้
-                            </div>
-                            <div
-                                id="nowDate"
-                                class="text-xl font-semibold text-gray-900 dark:text-white"
-                            >
-                                —
-                            </div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">วันนี้</div>
+                            <div id="nowDate" class="text-xl font-semibold text-gray-900 dark:text-white">—</div>
                         </div>
                     </div>
                     <div class="md:text-right">
-                        <div
-                            class="text-sm text-gray-500 dark:text-gray-400 mb-1"
-                        >
-                            เวลา
-                        </div>
-                        <div
-                            id="nowTime"
-                            class="text-3xl font-bold mono bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-                        >
-                            --:--:-- --
-                        </div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">เวลา</div>
+                        <div id="nowTime" class="text-3xl font-bold mono bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">--:--:-- --</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Current Period - Large Card -->
+            <!-- Current Period -->
             <div class="mb-6 animate-slide-in" id="currentBlock">
-                <div
-                    id="currentCard"
-                    class="p-8 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-3xl shadow-2xl text-white current-period-glow relative overflow-hidden"
-                >
-                    <div
-                        class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-32 -mt-32"
-                    ></div>
-                    <div
-                        class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-24 -mb-24"
-                    ></div>
+                <div id="currentCard" class="p-8 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-3xl shadow-2xl text-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-32 -mt-32"></div>
+                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-24 -mb-24"></div>
                     <div class="relative z-10">
                         <div class="flex items-center gap-2 mb-3">
-                            <span
-                                class="px-3 py-1 bg-white/20 rounded-full text-sm backdrop-blur-sm"
-                                >กำลังเรียน</span
-                            >
+                            <span class="px-3 py-1 bg-white/20 rounded-full text-sm backdrop-blur-sm">กำลังเรียน</span>
                         </div>
-                        <div
-                            id="currentSubject"
-                            class="text-4xl font-bold mb-3"
-                        >
-                            —
+                        <div id="currentSubject" class="text-4xl font-bold mb-3">—</div>
+                        <div id="currentTeacher" class="text-xl opacity-90 mb-4">—</div>
+                        <div class="mb-4 bg-white/20 rounded-full h-2 overflow-hidden backdrop-blur-sm">
+                            <div id="currentProgress" class="progress-bar bg-white h-full rounded-full" style="width: 0%"></div>
                         </div>
-                        <div
-                            id="currentTeacher"
-                            class="text-xl opacity-90 mb-4"
-                        >
-                            —
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div
-                            class="mb-4 bg-white/20 rounded-full h-2 overflow-hidden backdrop-blur-sm"
-                        >
-                            <div
-                                id="currentProgress"
-                                class="progress-bar bg-white h-full rounded-full"
-                                style="width: 0%"
-                            ></div>
-                        </div>
-
-                        <div
-                            class="flex items-center justify-between flex-wrap gap-4"
-                        >
-                            <div
-                                id="currentTime"
-                                class="mono text-lg opacity-90"
-                            >
-                                —
-                            </div>
-                            <div
-                                id="currentStatus"
-                                class="text-sm bg-white/20 px-5 py-2 rounded-full backdrop-blur-sm font-medium"
-                            >
-                                —
-                            </div>
+                        <div class="flex items-center justify-between flex-wrap gap-4">
+                            <div id="currentTime" class="mono text-lg opacity-90">—</div>
+                            <div id="currentStatus" class="text-sm bg-white/20 px-5 py-2 rounded-full backdrop-blur-sm font-medium">—</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Previous & Next Period -->
-            <div
-                class="grid md:grid-cols-2 gap-4 mb-8 animate-slide-in"
-                id="adjacentBlock"
-            >
+            <!-- Adjacent Periods -->
+            <div class="grid md:grid-cols-2 gap-4 mb-8 animate-slide-in" id="adjacentBlock">
                 <!-- Previous -->
-                <div
-                    class="glass-effect rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all"
-                >
+                <div class="glass-effect rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
                     <div class="flex items-center gap-2 mb-3">
-                        <svg
-                            class="w-5 h-5 text-gray-500 dark:text-gray-300"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M15 19l-7-7 7-7"
-                            ></path>
+                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
-                        <span
-                            class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-300 font-semibold"
-                            >คาบที่แล้ว</span
-                        >
+                        <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-300 font-semibold">คาบที่แล้ว</span>
                     </div>
-                    <div
-                        id="prevSubject"
-                        class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1"
-                    >
-                        —
-                    </div>
-                    <div
-                        id="prevTeacher"
-                        class="text-sm text-gray-600 dark:text-gray-300 mb-2"
-                    >
-                        —
-                    </div>
-                    <div
-                        id="prevTime"
-                        class="mono text-sm text-gray-500 dark:text-gray-400 mb-2"
-                    >
-                        —
-                    </div>
-                    <div
-                        id="prevEnded"
-                        class="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1"
-                    >
-                        <svg
-                            class="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                                clip-rule="evenodd"
-                            ></path>
-                        </svg>
-                        <span>—</span>
-                    </div>
+                    <div id="prevSubject" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">—</div>
+                    <div id="prevTeacher" class="text-sm text-gray-600 dark:text-gray-300 mb-2">—</div>
+                    <div id="prevTime" class="mono text-sm text-gray-500 dark:text-gray-400 mb-2">—</div>
+                    <div id="prevEnded" class="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">—</div>
                 </div>
 
                 <!-- Next -->
-                <div
-                    class="glass-effect rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all"
-                >
+                <div class="glass-effect rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
                     <div class="flex items-center gap-2 mb-3">
-                        <svg
-                            class="w-5 h-5 text-gray-500 dark:text-gray-300"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M9 5l7 7-7 7"
-                            ></path>
+                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
-                        <span
-                            class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-300 font-semibold"
-                            >คาบถัดไป</span
-                        >
+                        <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-300 font-semibold">คาบถัดไป</span>
                     </div>
-                    <div
-                        id="nextSubject"
-                        class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1"
-                    >
-                        —
-                    </div>
-                    <div
-                        id="nextTeacher"
-                        class="text-sm text-gray-600 dark:text-gray-300 mb-2"
-                    >
-                        —
-                    </div>
-                    <div
-                        id="nextTime"
-                        class="mono text-sm text-gray-500 dark:text-gray-400 mb-2"
-                    >
-                        —
-                    </div>
-                    <div
-                        id="nextCountdown"
-                        class="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1"
-                    >
-                        <svg
-                            class="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                                clip-rule="evenodd"
-                            ></path>
-                        </svg>
-                        <span>—</span>
-                    </div>
+                    <div id="nextSubject" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">—</div>
+                    <div id="nextTeacher" class="text-sm text-gray-600 dark:text-gray-300 mb-2">—</div>
+                    <div id="nextTime" class="mono text-sm text-gray-500 dark:text-gray-400 mb-2">—</div>
+                    <div id="nextCountdown" class="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">—</div>
                 </div>
             </div>
 
+            <!-- Tabs and List -->
             <section class="animate-slide-in">
-                <!-- Weekday Tabs -->
                 <div class="mb-6 glass-effect rounded-2xl p-4">
                     <div class="flex items-center justify-between gap-4">
-                        <button
-                            id="prevDayBtn"
-                            class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
-                        >
-                            <svg
-                                class="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M15 19l-7-7 7-7"
-                                ></path>
+                        <button id="prevDayBtn" class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                             </svg>
                         </button>
-                        <div
-                            id="weekdayTabs"
-                            class="flex flex-wrap gap-2 justify-center"
-                        ></div>
-                        <button
-                            id="nextDayBtn"
-                            class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
-                        >
-                            <svg
-                                class="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M9 5l7 7-7 7"
-                                ></path>
+                        <div id="weekdayTabs" class="flex flex-wrap gap-2 justify-center"></div>
+                        <button id="nextDayBtn" class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                         </button>
                     </div>
                 </div>
 
-                <h2
-                    id="todayTitle"
-                    class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2"
-                >
-                    <span
-                        class="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"
-                    ></span>
+                <h2 id="todayTitle" class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                    <span class="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></span>
                     ตารางวันนี้
                 </h2>
 
-                <!-- Search Bar -->
+                <!-- Search -->
                 <div class="mb-4 flex items-center gap-3">
                     <div class="relative flex-1">
-                        <svg
-                            class="absolute left-4 top-3.5 w-5 h-5 text-gray-400 dark:text-gray-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                            ></path>
+                        <svg class="absolute left-4 top-3.5 w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                        <input
-                            id="searchInput"
-                            type="text"
-                            inputmode="search"
-                            placeholder="ค้นหาวิชา หรือชื่อครู"
-                            class="w-full rounded-xl border-2 border-gray-200 dark:border-slate-600 glass-effect pl-11 pr-4 py-3 outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                        />
-                        <kbd
-                            class="hidden md:block absolute right-3 top-3 text-xs px-2 py-1 rounded-lg glass-effect text-gray-500 dark:text-gray-400 font-semibold"
-                            >/</kbd
-                        >
+                        <input id="searchInput" type="text" inputmode="search" placeholder="ค้นหาวิชา หรือชื่อครู" class="w-full rounded-xl border-2 border-gray-200 dark:border-slate-600 glass-effect pl-11 pr-4 py-3 outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500" />
+                        <kbd class="hidden md:block absolute right-3 top-3 text-xs px-2 py-1 rounded-lg glass-effect text-gray-500 dark:text-gray-400 font-semibold">/</kbd>
                     </div>
-                    <button
-                        id="clearSearchBtn"
-                        class="px-4 py-3 rounded-xl glass-effect hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-                    >
-                        <svg
-                            class="w-5 h-5 text-gray-600 dark:text-gray-300"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"
-                            ></path>
+                    <button id="clearSearchBtn" class="px-4 py-3 rounded-xl glass-effect hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
@@ -546,599 +175,6 @@
                 <div id="todayTable" class="space-y-3"></div>
             </section>
         </div>
-
-        <script>
-            let SCHEDULE = {};
-            let selectedWd = new Date().getDay();
-            let searchTerm = "";
-            const WEEKDAY_THAI = [
-                "อาทิตย์",
-                "จันทร์",
-                "อังคาร",
-                "พุธ",
-                "พฤหัสบดี",
-                "ศุกร์",
-                "เสาร์",
-            ];
-
-            async function loadSchedule() {
-                try {
-                    const res = await fetch("./schedule.json");
-                    SCHEDULE = await res.json();
-                    initSchedule();
-                } catch (error) {
-                    console.error("ไม่สามารถโหลดไฟล์ schedule.json:", error);
-                    el(
-                        "todayTable"
-                    ).innerHTML = `<div class="p-8 text-center text-red-500 dark:text-red-400 glass-effect rounded-2xl border border-dashed border-red-300 dark:border-red-800">ไม่สามารถโหลดตารางเรียนได้</div>`;
-                }
-            }
-
-            const pad = (n) => String(n).padStart(2, "0");
-            const parseHM = (hm, base = new Date()) => {
-                const [H, M] = hm.split(":").map(Number);
-                const d = new Date(base);
-                d.setHours(H, M, 0, 0);
-                return d;
-            };
-
-            // แปลงเวลาเป็นรูปแบบ 12 ชั่วโมง พร้อม AM/PM
-            const fmtHM = (d) => {
-                let h = d.getHours();
-                const m = pad(d.getMinutes());
-                const ampm = h >= 12 ? "PM" : "AM";
-                h = h % 12;
-                if (h === 0) h = 12;
-                return `${pad(h)}:${m} ${ampm}`;
-            };
-
-            const el = (id) => document.getElementById(id);
-
-            const escapeHTML = (s) =>
-                s == null
-                    ? ""
-                    : String(s)
-                          .replace(/&/g, "&amp;")
-                          .replace(/</g, "&lt;")
-                          .replace(/>/g, "&gt;");
-
-            const makeQueryRegex = (q) => {
-                if (!q) return null;
-                const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-                try {
-                    return new RegExp(escaped, "gi");
-                } catch {
-                    return null;
-                }
-            };
-
-            const highlightHTML = (text, q) => {
-                if (!q) return escapeHTML(text || "");
-                const rx = makeQueryRegex(q);
-                if (!rx) return escapeHTML(text || "");
-                const raw = String(text || "");
-                let out = "";
-                let last = 0;
-                for (const m of raw.matchAll(rx)) {
-                    const i = m.index ?? 0;
-                    out += escapeHTML(raw.slice(last, i));
-                    out += `<mark class="px-1 rounded bg-yellow-200 text-gray-900 dark:bg-yellow-500/70">${escapeHTML(
-                        m[0]
-                    )}</mark>`;
-                    last = i + m[0].length;
-                }
-                out += escapeHTML(raw.slice(last));
-                return out;
-            };
-
-            const isMatch = (p, q) => {
-                if (!q) return true;
-                const t = q.toLowerCase();
-                return (
-                    (p.subject || "").toLowerCase().includes(t) ||
-                    (p.teacher || "").toLowerCase().includes(t)
-                );
-            };
-
-            const debounce = (fn, ms = 120) => {
-                let h;
-                return (...args) => {
-                    clearTimeout(h);
-                    h = setTimeout(() => fn(...args), ms);
-                };
-            };
-
-            const humanizeMs = (ms) => {
-                if (ms <= 0) return "ถึงเวลาแล้ว";
-                const totalSec = Math.floor(ms / 1000);
-                const h = Math.floor(totalSec / 3600);
-                const m = Math.floor((totalSec % 3600) / 60);
-                const s = totalSec % 60;
-                if (h > 0) return `${h} ชม. ${m} นาที`;
-                if (m > 0) return `${m} นาที ${s} วินาที`;
-                return `${s} วินาที`;
-            };
-
-            const getScheduleByWd = (wd) => SCHEDULE[wd] ?? [];
-
-            const enrichPeriods = (periods, baseDate = new Date()) =>
-                periods
-                    .map((p) => ({
-                        ...p,
-                        startDate: parseHM(p.start, baseDate),
-                        endDate: parseHM(p.end, baseDate),
-                    }))
-                    .sort((a, b) => a.startDate - b.startDate);
-
-            const findNowPrevNext = (periods, now = new Date()) => {
-                const N = periods.length;
-                let current = null,
-                    prev = null,
-                    next = null;
-                for (let i = 0; i < N; i++) {
-                    const p = periods[i];
-                    if (now >= p.startDate && now < p.endDate) {
-                        current = p;
-                        prev = periods[i - 1] ?? null;
-                        let nextIndex = i + 1;
-                        while (
-                            nextIndex < N &&
-                            periods[nextIndex].code &&
-                            current.code &&
-                            periods[nextIndex].code === current.code
-                        )
-                            nextIndex++;
-                        next = periods[nextIndex] ?? null;
-                        break;
-                    }
-                }
-                if (!current) {
-                    prev =
-                        periods.filter((p) => p.endDate <= now).slice(-1)[0] ??
-                        null;
-                    const firstUpcomingIndex = periods.findIndex(
-                        (p) => p.startDate > now
-                    );
-                    if (firstUpcomingIndex !== -1) {
-                        let nextIndex = firstUpcomingIndex;
-                        if (prev && periods[nextIndex].code === prev.code) {
-                            let j = nextIndex;
-                            while (j < N && periods[j].code === prev.code) j++;
-                            nextIndex = j;
-                        }
-                        next = periods[nextIndex] ?? null;
-                    }
-                }
-                return { current, prev, next };
-            };
-
-            function updateStats(periods, now) {
-                const classes = periods.filter((p) => p.code !== "BREAK");
-                const completed = classes.filter(
-                    (p) => p.endDate <= now
-                ).length;
-                const total = classes.length;
-                const remaining = total - completed;
-                const percent =
-                    total > 0 ? Math.round((completed / total) * 100) : 0;
-
-                el("totalClasses").textContent = total;
-                el("completedClasses").textContent = completed;
-                el("remainingClasses").textContent = remaining;
-                el("progressPercent").textContent = percent + "%";
-            }
-
-            function renderSearchResults(q) {
-                const box = el("searchResults");
-                if (!q || !q.trim()) {
-                    box.classList.add("hidden");
-                    box.innerHTML = "";
-                    return;
-                }
-
-                const results = [];
-                for (let wd = 1; wd <= 5; wd++) {
-                    const dayPeriods = getScheduleByWd(wd) || [];
-                    for (const p of dayPeriods) {
-                        if (isMatch(p, q)) {
-                            results.push({ wd, p });
-                        }
-                    }
-                }
-
-                if (!results.length) {
-                    box.classList.remove("hidden");
-                    box.innerHTML = `<div class="p-4 rounded-xl glass-effect text-gray-500 dark:text-gray-300 text-center">ไม่พบผลลัพธ์ที่ตรงในสัปดาห์นี้</div>`;
-                    return;
-                }
-
-                const header = `<div class="p-3 rounded-xl glass-effect text-sm text-gray-600 dark:text-gray-200">ผลการค้นหา: <span class="font-semibold text-blue-600 dark:text-blue-400">${results.length}</span> รายการ</div>`;
-
-                const itemsHTML = results
-                    .map(({ wd, p }) => {
-                        const subjectHTML = highlightHTML(p.subject, q);
-                        const teacherText = p.teacher ? `ครู${p.teacher}` : "";
-                        const teacherHTML = highlightHTML(teacherText, q);
-                        const roomHTML = p.room
-                            ? ` • ห้อง ${escapeHTML(p.room)}`
-                            : "";
-
-                        // แปลงเวลา start/end จาก string "HH:MM" เป็น 12 ชั่วโมง
-                        const fmtStr = (hm) => {
-                            if (!hm) return "";
-                            const [H, M] = hm.split(":").map(Number);
-                            const ampm = H >= 12 ? "PM" : "AM";
-                            const h12 = H % 12 || 12;
-                            return `${pad(h12)}:${pad(M)} ${ampm}`;
-                        };
-
-                        return `
-                    <div class="p-4 rounded-xl glass-effect flex items-center justify-between hover:shadow-lg transition-all">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-medium">
-                                    ${WEEKDAY_THAI[wd]}
-                                </span>
-                                <div class="font-semibold text-gray-900 dark:text-gray-100">${subjectHTML}</div>
-                            </div>
-                            <div class="text-sm text-gray-500 dark:text-gray-300">${teacherHTML}${roomHTML}</div>
-                        </div>
-                        <div class="mono text-sm text-gray-600 dark:text-gray-300 ml-4">${fmtStr(p.start)} - ${fmtStr(p.end)}</div>
-                    </div>
-                `;
-                    })
-                    .join("");
-
-                box.classList.remove("hidden");
-                box.innerHTML = header + itemsHTML;
-            }
-
-            function renderTodayTable(periods, now = new Date()) {
-                const wrap = el("todayTable");
-                wrap.innerHTML = "";
-                if (!periods.length) {
-                    wrap.innerHTML = `<div class="p-8 text-center text-gray-400 dark:text-gray-400 glass-effect rounded-2xl">วันนี้ไม่มีตารางเรียน</div>`;
-                    return;
-                }
-
-                periods.forEach((p) => {
-                    const active = now >= p.startDate && now < p.endDate;
-                    const isBreak = p.code === "BREAK";
-                    const matched = isMatch(p, searchTerm);
-
-                    const bgClass = active
-                        ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-xl"
-                        : "glass-effect hover:shadow-lg";
-
-                    const fadeClass =
-                        !matched && searchTerm ? "opacity-30" : "";
-
-                    const subjectHTML = isBreak
-                        ? escapeHTML(p.subject)
-                        : highlightHTML(p.subject, searchTerm);
-                    const teacherText = p.teacher ? `ครู${p.teacher}` : "";
-                    const teacherHTML = highlightHTML(teacherText, searchTerm);
-                    const roomText =
-                        p.room && !isBreak ? ` • ห้อง ${p.room}` : "";
-                    const roomHTML = escapeHTML(roomText);
-
-                    const progressPercent = active
-                        ? ((now - p.startDate) / (p.endDate - p.startDate)) *
-                          100
-                        : 0;
-
-                    wrap.insertAdjacentHTML(
-                        "beforeend",
-                        isBreak
-                            ? `
-                        <div class="p-5 rounded-2xl ${bgClass} ${fadeClass} flex items-center justify-center text-center transition-all">
-                            <div>
-                                <div class="font-semibold ${
-                                    active
-                                        ? "text-white"
-                                        : "text-gray-900 dark:text-gray-100"
-                                }">
-                                    ${subjectHTML}
-                                </div>
-                                <div class="mono text-sm ${
-                                    active
-                                        ? "text-white/80"
-                                        : "text-gray-600 dark:text-gray-400"
-                                } mt-1">
-                                    ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
-                                </div>
-                            </div>
-                        </div>
-                        `
-                            : `
-                        <div class="p-5 rounded-2xl ${bgClass} ${fadeClass} transition-all relative overflow-hidden">
-                            ${
-                                active
-                                    ? `<div class="absolute bottom-0 left-0 h-1 bg-white/30 w-full"><div class="h-full bg-white transition-all duration-1000" style="width: ${progressPercent}%"></div></div>`
-                                    : ""
-                            }
-                            <div class="flex items-center justify-between">
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-2 mb-1">
-                                        ${
-                                            active
-                                                ? '<span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>'
-                                                : ""
-                                        }
-                                        <div class="font-semibold text-lg ${
-                                            active
-                                                ? "text-white"
-                                                : "text-gray-900 dark:text-gray-100"
-                                        }">
-                                            ${subjectHTML}
-                                        </div>
-                                    </div>
-                                    <div class="text-sm ${
-                                        active
-                                            ? "text-white/80"
-                                            : "text-gray-500 dark:text-gray-300"
-                                    } mt-1">
-                                        ${teacherHTML}${roomHTML}
-                                    </div>
-                                </div>
-                                <div class="mono text-sm ${
-                                    active
-                                        ? "text-white/90"
-                                        : "text-gray-600 dark:text-gray-300"
-                                } ml-4">
-                                    ${fmtHM(p.startDate)} - ${fmtHM(p.endDate)}
-                                </div>
-                            </div>
-                        </div>
-                        `
-                    );
-                });
-            }
-
-            function renderWeekdayTabs() {
-                const tabs = el("weekdayTabs");
-                tabs.innerHTML = "";
-
-                for (let wd = 1; wd <= 5; wd++) {
-                    const label = WEEKDAY_THAI[wd];
-                    const isActive = wd === selectedWd;
-
-                    const btn = document.createElement("button");
-                    btn.className =
-                        "tab-btn px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105";
-                    btn.setAttribute("aria-current", String(isActive));
-                    btn.innerHTML = `<span class="tab-label">${label}</span>`;
-                    btn.addEventListener("click", () => {
-                        selectedWd = wd;
-                        render(new Date());
-                    });
-
-                    tabs.appendChild(btn);
-                }
-                updateDayButtons();
-            }
-
-            function updateDayButtons() {
-                const prevBtn = el("prevDayBtn");
-                const nextBtn = el("nextDayBtn");
-
-                prevBtn.disabled = selectedWd <= 1;
-                nextBtn.disabled = selectedWd >= 5;
-
-                [prevBtn, nextBtn].forEach((btn) => {
-                    if (btn.disabled) {
-                        btn.classList.add("opacity-30", "cursor-not-allowed");
-                    } else {
-                        btn.classList.remove(
-                            "opacity-30",
-                            "cursor-not-allowed"
-                        );
-                    }
-                });
-            }
-
-            function toggleLiveBlocks(show) {
-                el("currentBlock").style.display = show ? "" : "none";
-                el("adjacentBlock").style.display = show ? "" : "none";
-            }
-
-            // แปลงเวลาปัจจุบันเป็น 12 ชั่วโมง พร้อม AM/PM และวินาที
-            const fmt12HourWithSeconds = (d) => {
-                let h = d.getHours();
-                const m = pad(d.getMinutes());
-                const s = pad(d.getSeconds());
-                const ampm = h >= 12 ? "PM" : "AM";
-                h = h % 12;
-                if (h === 0) h = 12;
-                return `${pad(h)}:${m}:${s} ${ampm}`;
-            };
-
-            function render(now = new Date()) {
-                el("nowTime").textContent = fmt12HourWithSeconds(now);
-                el("nowDate").textContent =
-                    `${WEEKDAY_THAI[now.getDay()]}ที่ ` +
-                    now.toLocaleDateString("th-TH", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                    });
-
-                renderWeekdayTabs();
-                renderSearchResults(searchTerm);
-
-                const isTodaySelected = selectedWd === now.getDay();
-                el("todayTitle").innerHTML = `
-                <span class="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></span>
-                ${
-                    isTodaySelected
-                        ? "ตารางวันนี้"
-                        : `ตารางวัน${WEEKDAY_THAI[selectedWd]}`
-                }
-            `;
-
-                const baseDate = new Date(now);
-                const todayRaw = getScheduleByWd(selectedWd);
-                const today = enrichPeriods(todayRaw, baseDate);
-
-                renderTodayTable(
-                    today,
-                    isTodaySelected
-                        ? now
-                        : new Date(baseDate.setHours(0, 0, 0, 0))
-                );
-
-                if (isTodaySelected) {
-                    updateStats(today, now);
-                }
-
-                toggleLiveBlocks(isTodaySelected);
-
-                if (isTodaySelected) {
-                    const { current, prev, next } = findNowPrevNext(today, now);
-
-                    const currentCard = el("currentCard");
-                    if (current) {
-                        const isBreak = current.code === "BREAK";
-                        currentCard.className = isBreak
-                            ? "p-8 bg-gradient-to-br from-gray-500 to-gray-600 dark:from-gray-700 dark:to-gray-800 rounded-3xl shadow-2xl text-white relative overflow-hidden"
-                            : "p-8 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-3xl shadow-2xl text-white current-period-glow relative overflow-hidden";
-
-                        const progressPercent =
-                            ((now - current.startDate) /
-                                (current.endDate - current.startDate)) *
-                            100;
-                        el("currentProgress").style.width =
-                            progressPercent + "%";
-
-                        el("currentSubject").textContent = current.subject;
-                        el("currentTeacher").textContent = current.teacher
-                            ? `ครู${current.teacher}${
-                                  current.room ? ` • ห้อง ${current.room}` : ""
-                              }`
-                            : current.room
-                            ? `ห้อง ${current.room}`
-                            : "";
-                        el("currentTime").textContent = `${fmtHM(
-                            current.startDate
-                        )} - ${fmtHM(current.endDate)}`;
-                        const left = current.endDate - now;
-                        el(
-                            "currentStatus"
-                        ).textContent = `เหลือเวลาอีก ${humanizeMs(left)}`;
-                    } else {
-                        currentCard.className =
-                            "p-8 bg-gradient-to-br from-gray-400 to-gray-500 dark:from-gray-800 dark:to-gray-900 rounded-3xl shadow-2xl text-white relative overflow-hidden";
-                        el("currentProgress").style.width = "0%";
-                        el("currentSubject").textContent = "ไม่มีคาบในขณะนี้";
-                        el("currentTeacher").textContent = "—";
-                        el("currentTime").textContent = "—";
-                        el("currentStatus").textContent = "พักผ่อน";
-                    }
-
-                    if (prev) {
-                        el("prevSubject").textContent = prev.subject;
-                        el("prevTeacher").textContent = prev.teacher
-                            ? `ครู${prev.teacher}`
-                            : "";
-                        el("prevTime").textContent = `${fmtHM(
-                            prev.startDate
-                        )} - ${fmtHM(prev.endDate)}`;
-                        el("prevEnded").innerHTML = `
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span>จบไปแล้ว ${humanizeMs(now - prev.endDate)}</span>
-                    `;
-                    } else {
-                        el("prevSubject").textContent = "—";
-                        el("prevTeacher").textContent = "—";
-                        el("prevTime").textContent = "—";
-                        el("prevEnded").innerHTML = "—";
-                    }
-
-                    if (next) {
-                        el("nextSubject").textContent = next.subject;
-                        el("nextTeacher").textContent = next.teacher
-                            ? `ครู${next.teacher}`
-                            : "";
-                        el("nextTime").textContent = `${fmtHM(
-                            next.startDate
-                        )} - ${fmtHM(next.endDate)}`;
-                        const msUntil = Math.max(0, next.startDate - now);
-                        el("nextCountdown").innerHTML = `
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span>เริ่มในอีก ${humanizeMs(msUntil)}</span>
-                    `;
-                    } else {
-                        el("nextSubject").textContent = "—";
-                        el("nextTeacher").textContent = "—";
-                        el("nextTime").textContent = "—";
-                        el("nextCountdown").innerHTML = "—";
-                    }
-                }
-            }
-
-            el("prevDayBtn").onclick = () => {
-                if (selectedWd > 1) {
-                    selectedWd--;
-                    render(new Date());
-                }
-            };
-
-            el("nextDayBtn").onclick = () => {
-                if (selectedWd < 5) {
-                    selectedWd++;
-                    render(new Date());
-                }
-            };
-
-            const applySearch = debounce(() => {
-                searchTerm = (el("searchInput")?.value || "").trim();
-                render(new Date());
-            }, 120);
-
-            window.addEventListener("DOMContentLoaded", () => {
-                const inp = el("searchInput");
-                const clr = el("clearSearchBtn");
-                if (inp) {
-                    inp.addEventListener("input", applySearch);
-                }
-                if (clr) {
-                    clr.addEventListener("click", () => {
-                        if (!inp) return;
-                        inp.value = "";
-                        searchTerm = "";
-                        render(new Date());
-                        inp.focus();
-                    });
-                }
-                window.addEventListener("keydown", (e) => {
-                    if (
-                        e.key === "/" &&
-                        !e.metaKey &&
-                        !e.ctrlKey &&
-                        !e.altKey
-                    ) {
-                        const tag = (
-                            document.activeElement?.tagName || ""
-                        ).toLowerCase();
-                        if (tag !== "input" && tag !== "textarea") {
-                            e.preventDefault();
-                            inp?.focus();
-                            inp?.select();
-                        }
-                    }
-                });
-            });
-
-            function initSchedule() {
-                render(new Date());
-                setInterval(() => render(new Date()), 1000);
-            }
-
-            loadSchedule();
-        </script>
+        <script type="module" src="/src/main.ts"></script>
     </body>
 </html>

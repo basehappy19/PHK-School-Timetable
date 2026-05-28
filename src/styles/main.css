@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        @apply transition-all duration-300;
+        font-family: "Prompt", system-ui, -apple-system, sans-serif;
+    }
+    
+    html, body {
+        @apply overflow-auto min-h-screen;
+    }
+}
+
+@layer components {
+    .mono {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .tab-btn[aria-current="true"] {
+        background: linear-gradient(135deg, rgb(59 130 246) 0%, rgb(37 99 235) 100%);
+        @apply text-white shadow-lg translate-y-[-2px];
+        box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+    }
+
+    .glass-effect {
+        @apply bg-white/80 dark:bg-slate-800/60 backdrop-blur-md border border-gray-200/50 dark:border-slate-700/50;
+    }
+
+    .current-period-glow {
+        @apply animate-pulse-glow;
+    }
+
+    .progress-bar {
+        @apply transition-[width] duration-1000 ease-linear;
+    }
+}
