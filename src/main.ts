@@ -6,6 +6,19 @@ import { renderCurrentBlock } from './components/CurrentBlock';
 import { renderTimetable } from './components/Timetable';
 import { fmt12HourWithSeconds } from './utils/time';
 import { debounce } from './utils/search';
+import { registerSW } from 'virtual:pwa-register';
+
+// Register PWA Service Worker
+registerSW({
+    onNeedRefresh() {
+        if (confirm('มีอัปเดตใหม่ ต้องการรีโหลดเพื่อใช้งานเวอร์ชันล่าสุดหรือไม่?')) {
+            location.reload();
+        }
+    },
+    onOfflineReady() {
+        console.log('แอปพร้อมใช้งานแบบออฟไลน์');
+    },
+});
 
 const WEEKDAY_THAI = [
     "อาทิตย์",
