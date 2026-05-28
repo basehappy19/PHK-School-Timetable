@@ -1,12 +1,12 @@
 {
-    "name": "ตารางเรียน ม.5/1",
-    "short_name": "ตารางเรียน 5/1",
+    "name": "ตารางเรียน ม.6/1",
+    "short_name": "ตารางเรียน 6/1",
     "lang": "th",
     "start_url": ".",
     "scope": ".",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#0ea5e9",
+    "theme_color": "#3b82f6",
     "icons": [
         {
             "src": "/favicon_io/android-chrome-192x192.png",
